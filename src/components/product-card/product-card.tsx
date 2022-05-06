@@ -8,7 +8,7 @@ function ProductCard({card}: ProductCardProps): JSX.Element {
 
   return (
     <div className="product-card">
-      <img src={`${card.previewImg}`} srcSet={`${card.previewImg}`} width="75" height="190" alt={card.name} />
+      <img src={card.previewImg}  width="75" height="190" alt={card.name} />
       <div className="product-card__info">
         <div className="rate product-card__rate">
           <svg width="12" height="11" aria-hidden="true">
