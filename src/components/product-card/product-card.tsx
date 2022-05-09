@@ -1,3 +1,6 @@
+import { useState } from 'react';
+import { generatePath, Link } from 'react-router-dom';
+import { AppRoute } from '../../const';
 import { Card } from '../../types/card';
 
 type ProductCardProps = {
@@ -6,8 +9,17 @@ type ProductCardProps = {
 
 function ProductCard({card}: ProductCardProps): JSX.Element {
 
+  const mouseOverHandler = () => {
+    setMouseOver(card.id);
+  };
+  const mouseOutHandler = () => {
+    setMouseOver(-1);
+  };
+
+  const [mouseOver, setMouseOver] = useState(-1);
+
   return (
-    <div className="product-card">
+    <div className="product-card" onMouseOver={mouseOverHandler} onMouseOut={mouseOutHandler}>
       <img src={card.previewImg}  width="75" height="190" alt={card.name} />
       <div className="product-card__info">
         <div className="rate product-card__rate">
@@ -34,7 +46,7 @@ function ProductCard({card}: ProductCardProps): JSX.Element {
         </p>
       </div>
       <div className="product-card__buttons">
-        <a className="button button--mini" href="/">Подробнее</a>
+        <Link className="button button--mini" to={generatePath(AppRoute.CardPage, {id: String(mouseOver)})}>Подробнее</Link>
         <a className="button button--red button--mini button--add-to-cart" href="/">Купить</a>
       </div>
     </div>

@@ -1,10 +1,11 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { changePage, getCurrentCards, loadCards } from './action';
+import { InitialProduct } from '../const';
+import { changePage, loadCards, loadProduct } from './action';
 
 const initialState = {
   cards: [],
   currentPage: 1,
-  currentCards: [],
+  product: InitialProduct,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -15,8 +16,8 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(changePage, (state, action) => {
       state.currentPage = action.payload;
     })
-    .addCase(getCurrentCards, (state, action) => {
-      state.currentCards = action.payload;
+    .addCase(loadProduct, (state, action) => {
+      state.product = action.payload;
     });
 });
 
