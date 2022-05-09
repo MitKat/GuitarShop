@@ -1,15 +1,29 @@
-import { Card } from '../../types/card';
+import { useEffect, useState } from 'react';
+import { CARDS_PER_PAGE } from '../../const';
+import { useAppSelector } from '../../hooks/main';
 import CatalogCards from '../catalog-cards/catalog-cards';
 import CatalogFilter from '../catalog-filter/catalog-filter';
 import CatalogSort from '../catalog-sort/catalog-sort';
 import Footer from '../footer/footer';
 import Header from '../header/header';
+import Pagination from '../pagination/pagination';
 
-type MainPageProps = {
-  catalogCards: Card[];
-}
 
-function MainPage({catalogCards}: MainPageProps): JSX.Element {
+function MainPage(): JSX.Element {
+  const catalogCards = useAppSelector((state) => state.cards);
+  const currentPage = useAppSelector((state) => state.currentPage);
+
+  const countPage = Math.ceil(catalogCards.length/CARDS_PER_PAGE);
+  const [cards, setCards] = useState(catalogCards.slice(0, CARDS_PER_PAGE));
+  const lastIndex = currentPage*CARDS_PER_PAGE;
+  const firstIndex = lastIndex - CARDS_PER_PAGE;
+
+  useEffect(() => {
+    setCards(catalogCards.slice(firstIndex, lastIndex));
+
+  }, [catalogCards,firstIndex, lastIndex]);
+
+
   return (
     <div className="wrapper">
       <Header />
@@ -25,19 +39,8 @@ function MainPage({catalogCards}: MainPageProps): JSX.Element {
           <div className="catalog">
             <CatalogFilter />
             <CatalogSort />
-            <CatalogCards catalogCards={catalogCards} />
-            <div className="pagination page-content__pagination">
-              <ul className="pagination__list">
-                <li className="pagination__page pagination__page--active"><a className="link pagination__page-link" href="1">1</a>
-                </li>
-                <li className="pagination__page"><a className="link pagination__page-link" href="2">2</a>
-                </li>
-                <li className="pagination__page"><a className="link pagination__page-link" href="3">3</a>
-                </li>
-                <li className="pagination__page pagination__page--next" id="next"><a className="link pagination__page-link" href="2">Далее</a>
-                </li>
-              </ul>
-            </div>
+            <CatalogCards catalogCards={cards} />
+            <Pagination countPage={countPage} currentPage={currentPage} />
           </div>
         </div>
       </main>

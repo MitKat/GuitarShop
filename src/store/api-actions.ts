@@ -7,8 +7,8 @@ import { loadCards } from './action';
 export const fetchCardsAction = createAsyncThunk(
   'data/fetchCards',
   async () => {
-    const {data} = await api.get(APIRoute.Cards);
+    const {data} = await api.get(`${APIRoute.Cards}`);
     store.dispatch(loadCards(data));
-
   },
 );
+
