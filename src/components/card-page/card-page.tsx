@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { AppRoute, TypeGuitarTranslation } from '../../const';
+import { TypeGuitarTranslation } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks/main';
 import useScrollTop from '../../hooks/use-scroll-top';
 import { fetchProductAction } from '../../store/api-actions';
+import Breadcrumbs from '../breadcrumbs/breadcrumbs';
 import Footer from '../footer/footer';
 import Header from '../header/header';
 
@@ -38,14 +39,7 @@ function CardPage(): JSX.Element {
       <main className="page-content">
         <div className="container">
           <h1 className="page-content__title title title--bigger">{product.name}</h1>
-          <ul className="breadcrumbs page-content__breadcrumbs">
-            <li className="breadcrumbs__item"><a className="link" href={AppRoute.Main}>Главная</a>
-            </li>
-            <li className="breadcrumbs__item"><a className="link" href={AppRoute.Catalog}>Каталог</a>
-            </li>
-            <li className="breadcrumbs__item"><a className="link" href=' '>{product.name}</a>
-            </li>
-          </ul>
+          <Breadcrumbs productName={product.name} />
           <div className="product-container">
             <img className="product-container__img"
               src={`/${product.previewImg}`}

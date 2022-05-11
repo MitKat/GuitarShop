@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { CARDS_PER_PAGE } from '../../const';
 import { useAppSelector } from '../../hooks/main';
+import Breadcrumbs from '../breadcrumbs/breadcrumbs';
 import CatalogCards from '../catalog-cards/catalog-cards';
 import CatalogFilter from '../catalog-filter/catalog-filter';
 import CatalogSort from '../catalog-sort/catalog-sort';
@@ -32,12 +33,7 @@ function MainPage(): JSX.Element {
       <main className="page-content">
         <div className="container">
           <h1 className="page-content__title title title--bigger">Каталог гитар</h1>
-          <ul className="breadcrumbs page-content__breadcrumbs">
-            <li className="breadcrumbs__item"><a className="link" href="./main.html">Главная</a>
-            </li>
-            <li className="breadcrumbs__item"><a className="link" href="/">Каталог</a>
-            </li>
-          </ul>
+          <Breadcrumbs />
           <div className="catalog">
             <CatalogFilter />
             <CatalogSort />
