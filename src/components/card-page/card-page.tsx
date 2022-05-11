@@ -72,16 +72,32 @@ function CardPage(): JSX.Element {
                 <p className="visually-hidden">Оценка: Хорошо</p>
               </div>
               <div className="tabs">
-                <a className={`button button--medium tabs__button ${isHiddenCharacteristic ? 'button--black-border' : ' '}`}
-                  href="#characteristics"
-                  onClick={HandleChangeTab}
-                >Характеристики
-                </a>
-                <a className={`button button--medium tabs__button ${isHiddenDescription ? 'button--black-border' : ' '}`}
-                  href="#description"
-                  onClick={HandleChangeTab}
-                >Описание
-                </a>
+                {
+                  isHiddenCharacteristic ?
+                    <a className='button button--medium tabs__button  button--black-border'
+                      href="#characteristics"
+                      onClick={HandleChangeTab}
+                    >Характеристики
+                    </a>
+                    :
+                    <a className='button button--medium tabs__button'
+                      href="#characteristics"
+                    >Характеристики
+                    </a>
+                }
+                {
+                  isHiddenDescription ?
+                    <a className='button button--medium tabs__button button--black-border'
+                      href="#description"
+                      onClick={HandleChangeTab}
+                    >Описание
+                    </a>
+                    :
+                    <a className='button button--medium tabs__button'
+                      href="#description"
+                    >Описание
+                    </a>
+                }
                 <div className="tabs__content ">
                   <table hidden={isHiddenCharacteristic} className="tabs__table">
                     <tr className="tabs__table-row">

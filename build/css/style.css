@@ -1327,10 +1327,11 @@ button,
   --button-vertical-padding: 12px;
 }
 
-.button:hover {
+/* .button:hover {
   color: #131212;
   background-color: #fefafa;
-}
+} */
+
 
 .button--mini {
   font-size: 12px;
@@ -1392,10 +1393,10 @@ button,
   background-color: #fefafa;
 }
 
-.button--black-border:hover {
+/* .button--black-border:hover {
   color: #fefafa;
   background-color: #131212;
-}
+} */
 
 .button--transparent {
   background-color: transparent;
