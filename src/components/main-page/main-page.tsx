@@ -6,12 +6,14 @@ import CatalogFilter from '../catalog-filter/catalog-filter';
 import CatalogSort from '../catalog-sort/catalog-sort';
 import Footer from '../footer/footer';
 import Header from '../header/header';
+import Loading from '../loading/loading';
 import Pagination from '../pagination/pagination';
 
 
 function MainPage(): JSX.Element {
   const catalogCards = useAppSelector((state) => state.cards);
   const currentPage = useAppSelector((state) => state.currentPage);
+  const isDataLoaded = useAppSelector((state) => state.isDataLoaded);
 
   const countPage = Math.ceil(catalogCards.length/CARDS_PER_PAGE);
   const [cards, setCards] = useState(catalogCards.slice(0, CARDS_PER_PAGE));
@@ -39,8 +41,15 @@ function MainPage(): JSX.Element {
           <div className="catalog">
             <CatalogFilter />
             <CatalogSort />
-            <CatalogCards catalogCards={cards} />
-            <Pagination countPage={countPage} currentPage={currentPage} />
+            {
+              isDataLoaded ?
+                <>
+                  <CatalogCards catalogCards={cards} />
+                  <Pagination countPage={countPage} currentPage={currentPage} />
+                </>
+                :
+                <Loading />
+            }
           </div>
         </div>
       </main>

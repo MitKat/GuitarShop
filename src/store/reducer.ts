@@ -6,12 +6,14 @@ const initialState = {
   cards: [],
   currentPage: 1,
   product: InitialProduct,
+  isDataLoaded: false,
 };
 
 const reducer = createReducer(initialState, (builder) => {
   builder
     .addCase(loadCards, (state, action) => {
       state.cards = action.payload;
+      state.isDataLoaded = true;
     })
     .addCase(changePage, (state, action) => {
       state.currentPage = action.payload;

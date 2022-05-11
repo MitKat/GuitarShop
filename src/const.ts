@@ -1,7 +1,8 @@
 export enum AppRoute {
   Main = '/',
   Catalog = '/#catalog/:pageNumber',
-  CardPage = '/:id',
+  CardPage = '/product/:id',
+  NotFound = '/*',
 }
 
 export enum APIRoute {

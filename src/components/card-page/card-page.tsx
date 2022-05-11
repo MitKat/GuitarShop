@@ -120,12 +120,12 @@ function CardPage(): JSX.Element {
             <div className="product-container__price-wrapper">
               <p className="product-container__price-info product-container__price-info--title">Цена:</p>
               <p className="product-container__price-info product-container__price-info--value">{`${product.price} ₽`}</p>
-              <a className="button button--red button--big product-container__button" href="#">Добавить в корзину</a>
+              <a className="button button--red button--big product-container__button" href=" ">Добавить в корзину</a>
             </div>
           </div>
           <section className="reviews">
             <h3 className="reviews__title title title--bigger">Отзывы</h3>
-            <a className="button button--red-border button--big reviews__sumbit-button" href="#">Оставить отзыв</a>
+            <a className="button button--red-border button--big reviews__sumbit-button" href=" ">Оставить отзыв</a>
             <div className="review">
               <div className="review__wrapper">
                 <h4 className="review__title review__title--author title title--lesser">Иванов Максим</h4><span className="review__date">12 декабря</span>
