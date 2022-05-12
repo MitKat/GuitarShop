@@ -12,7 +12,7 @@ import Header from '../header/header';
 function CardPage(): JSX.Element {
   const {id} = useParams();
   const dispatch = useAppDispatch();
-  const product = useAppSelector((state) => (state.product));
+  const {product} = useAppSelector(({DATA}) => DATA);
 
   useScrollTop();
 

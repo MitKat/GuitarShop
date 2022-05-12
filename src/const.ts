@@ -1,12 +1,17 @@
 export enum AppRoute {
   Main = '/',
-  Catalog = '/#catalog/:pageNumber',
+  Catalog = '/catalog/page_:pageNumber',
   CardPage = '/product/:id',
   NotFound = '/*',
 }
 
 export enum APIRoute {
   Cards = '/guitars',
+}
+
+export enum NameSpace {
+  Main = 'MAIN',
+  Data = 'DATA',
 }
 
 export const CARDS_PER_PAGE = 9;

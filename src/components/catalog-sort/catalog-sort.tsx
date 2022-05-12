@@ -1,3 +1,5 @@
+import React from 'react';
+
 function CatalogSort(): JSX.Element {
   return (
     <div className="catalog-sort">
@@ -14,5 +16,5 @@ function CatalogSort(): JSX.Element {
   );
 }
 
-export default CatalogSort;
+export default React.memo(CatalogSort);
 

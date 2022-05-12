@@ -9,8 +9,8 @@ function App(): JSX.Element {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path={AppRoute.Main} element={<MainPage />} />
-        <Route path={AppRoute.Catalog} element={<MainPage />} />
+        <Route path={AppRoute.Main} element={<MainPage urlPage='main'/>} />
+        <Route path={AppRoute.Catalog} element={<MainPage urlPage='catalog' />} />
         <Route path={AppRoute.CardPage} element={<CardPage />} />
         <Route path={AppRoute.NotFound} element={<NotFoundPage />} />
       </Routes>

@@ -1,3 +1,5 @@
+import React from 'react';
+
 function Header(): JSX.Element {
   return (
     <header className="header" id="header">
@@ -49,4 +51,4 @@ function Header(): JSX.Element {
   );
 }
 
-export default Header;
+export default React.memo(Header);

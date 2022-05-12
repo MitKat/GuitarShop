@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { CARDS_PER_PAGE } from '../../const';
 import { useAppSelector } from '../../hooks/main';
 import Breadcrumbs from '../breadcrumbs/breadcrumbs';
@@ -10,21 +11,31 @@ import Header from '../header/header';
 import Loading from '../loading/loading';
 import Pagination from '../pagination/pagination';
 
+type MainPageProps = {
+  urlPage: 'main' | 'catalog';
+};
 
-function MainPage(): JSX.Element {
-  const catalogCards = useAppSelector((state) => state.cards);
-  const currentPage = useAppSelector((state) => state.currentPage);
-  const isDataLoaded = useAppSelector((state) => state.isDataLoaded);
+function MainPage({urlPage}: MainPageProps): JSX.Element {
+  const {catalogCards} = useAppSelector(({DATA}) => DATA);
+  const {isDataLoaded} = useAppSelector(({DATA}) => DATA);
+
+  const {pageNumber} = useParams();
 
   const countPage = Math.ceil(catalogCards.length/CARDS_PER_PAGE);
   const [cards, setCards] = useState(catalogCards.slice(0, CARDS_PER_PAGE));
-  const lastIndex = currentPage*CARDS_PER_PAGE;
-  const firstIndex = lastIndex - CARDS_PER_PAGE;
 
   useEffect(() => {
-    setCards(catalogCards.slice(firstIndex, lastIndex));
+    const lastIndex = Number(pageNumber)*CARDS_PER_PAGE;
+    const firstIndex = lastIndex - CARDS_PER_PAGE;
 
-  }, [catalogCards,firstIndex, lastIndex]);
+    if (urlPage === 'main') {
+      setCards(catalogCards.slice(0, CARDS_PER_PAGE));
+    }
+    if (urlPage === 'catalog') {
+      setCards(catalogCards.slice(firstIndex, lastIndex));
+    }
+
+  }, [catalogCards, pageNumber, urlPage]);
 
 
   return (
@@ -41,7 +52,7 @@ function MainPage(): JSX.Element {
               isDataLoaded ?
                 <>
                   <CatalogCards catalogCards={cards} />
-                  <Pagination countPage={countPage} currentPage={currentPage} />
+                  <Pagination countPage={countPage} />
                 </>
                 :
                 <Loading />

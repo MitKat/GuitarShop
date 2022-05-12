@@ -1,3 +1,5 @@
+import React from 'react';
+
 function Footer(): JSX.Element {
   return (
     <footer className="footer">
@@ -70,4 +72,4 @@ function Footer(): JSX.Element {
   );
 }
 
-export default Footer;
+export default React.memo(Footer);

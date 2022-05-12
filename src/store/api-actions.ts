@@ -2,7 +2,8 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { store } from '.';
 import { APIRoute } from '../const';
 import { api } from '../services/api';
-import { loadCards, loadProduct } from './action';
+import { loadCards, loadProduct } from './data-process/data-process';
+
 
 export const fetchCardsAction = createAsyncThunk(
   'data/fetchCards',

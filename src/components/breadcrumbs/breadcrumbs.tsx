@@ -1,3 +1,4 @@
+import React from 'react';
 import { AppRoute } from '../../const';
 
 type BreadcrumbsProps = {
@@ -11,7 +12,7 @@ function Breadcrumbs({productName}: BreadcrumbsProps): JSX.Element {
         <a className="link" href={AppRoute.Main}>Главная</a>
       </li>
       <li className="breadcrumbs__item">
-        <a className="link" href={AppRoute.Catalog}>Каталог</a>
+        <a className="link" href={AppRoute.Main}>Каталог</a>
       </li>
       {
         productName &&
@@ -23,4 +24,4 @@ function Breadcrumbs({productName}: BreadcrumbsProps): JSX.Element {
   );
 }
 
-export default Breadcrumbs;
+export default React.memo(Breadcrumbs);
