@@ -30,7 +30,7 @@ function ProductCard({card}: ProductCardProps): JSX.Element {
 
   return (
     <div className="product-card" onMouseOver={mouseOverHandler} onMouseOut={mouseOutHandler}>
-      <img src={card.previewImg}  width="75" height="190" alt={card.name} />
+      <img src={`${process.env.PUBLIC_URL}/${card.previewImg}`}  width="75" height="190" alt={card.name} />
       <div className="product-card__info">
         <div className="rate product-card__rate">
           <Rating rating={card.rating} />

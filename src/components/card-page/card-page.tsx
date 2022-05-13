@@ -47,7 +47,7 @@ function CardPage(): JSX.Element {
           <Breadcrumbs productName={product.name} />
           <div className="product-container">
             <img className="product-container__img"
-              src={`/${product.previewImg}`}
+              src={`${process.env.PUBLIC_URL}/${product.previewImg}`}
               width="90" height="235" alt=""
             />
             <div className="product-container__info-wrapper">
