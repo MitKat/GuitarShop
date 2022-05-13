@@ -5,6 +5,7 @@ const initialState = {
   catalogCards: [],
   product: InitialProduct,
   isDataLoaded: false,
+  comments: [],
 };
 
 export const dataProcess = createSlice({
@@ -18,10 +19,14 @@ export const dataProcess = createSlice({
     loadProduct: (state, action) => {
       state.product = action.payload;
     },
+    loadComments: (state, action) => {
+      state.comments = action.payload;
+    },
   },
 });
 
 export const {
   loadCards,
   loadProduct,
+  loadComments,
 } = dataProcess.actions;

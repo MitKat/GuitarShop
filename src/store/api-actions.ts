@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { store } from '.';
 import { APIRoute } from '../const';
 import { api } from '../services/api';
-import { loadCards, loadProduct } from './data-process/data-process';
+import { loadCards, loadComments, loadProduct } from './data-process/data-process';
 
 
 export const fetchCardsAction = createAsyncThunk(
@@ -18,6 +18,14 @@ export const fetchProductAction = createAsyncThunk(
   async (id: string) => {
     const {data} = await api.get(`${APIRoute.Cards}/${id}`);
     store.dispatch(loadProduct(data));
+  },
+);
+
+export const fetchCommentsAction = createAsyncThunk(
+  'data/fetchComments',
+  async (id: string) => {
+    const {data} = await api.get(`${APIRoute.Cards}/${id}${APIRoute.Comments}`);
+    store.dispatch(loadComments(data));
   },
 );
 

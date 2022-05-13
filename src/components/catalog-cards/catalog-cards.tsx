@@ -6,6 +6,7 @@ type CatalogCardsProps = {
 }
 
 function CatalogCards({catalogCards}: CatalogCardsProps): JSX.Element {
+
   return (
     <div className="cards catalog__cards">
       {

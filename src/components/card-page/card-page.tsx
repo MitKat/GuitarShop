@@ -3,21 +3,26 @@ import { useParams } from 'react-router-dom';
 import { TypeGuitarTranslation } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks/main';
 import useScrollTop from '../../hooks/use-scroll-top';
-import { fetchProductAction } from '../../store/api-actions';
+import { fetchCommentsAction, fetchProductAction } from '../../store/api-actions';
+import { Comment } from '../../types/comment';
 import Breadcrumbs from '../breadcrumbs/breadcrumbs';
+import Comments from '../comments/comments';
 import Footer from '../footer/footer';
 import Header from '../header/header';
+import Rating from '../rating/rating';
 
 
 function CardPage(): JSX.Element {
   const {id} = useParams();
   const dispatch = useAppDispatch();
-  const {product} = useAppSelector(({DATA}) => DATA);
+  const product = useAppSelector(({DATA}) => DATA.product);
+  const comments: Comment[] = useAppSelector(({DATA}) => DATA.comments);
 
   useScrollTop();
 
   useEffect(() => {
     dispatch(fetchProductAction(String(id)));
+    dispatch(fetchCommentsAction(String(id)));
   }, [id, dispatch]);
 
   const [isHiddenCharacteristic, setIsHiddenCharacteristic] = useState(false);
@@ -48,22 +53,8 @@ function CardPage(): JSX.Element {
             <div className="product-container__info-wrapper">
               <h2 className="product-container__title title title--big title--uppercase">{product.name}</h2>
               <div className="rate product-container__rating">
-                <svg width="14" height="14" aria-hidden="true">
-                  <use xlinkHref="#icon-full-star"></use>
-                </svg>
-                <svg width="14" height="14" aria-hidden="true">
-                  <use xlinkHref="#icon-full-star"></use>
-                </svg>
-                <svg width="14" height="14" aria-hidden="true">
-                  <use xlinkHref="#icon-full-star"></use>
-                </svg>
-                <svg width="14" height="14" aria-hidden="true">
-                  <use xlinkHref="#icon-full-star"></use>
-                </svg>
-                <svg width="14" height="14" aria-hidden="true">
-                  <use xlinkHref="#icon-star"></use>
-                </svg>
-                <p className="visually-hidden">Оценка: Хорошо</p>
+                <Rating rating={product.rating} />
+                <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>{comments.length}</p>
               </div>
               <div className="tabs">
                 {
@@ -117,98 +108,7 @@ function CardPage(): JSX.Element {
               <a className="button button--red button--big product-container__button" href=" ">Добавить в корзину</a>
             </div>
           </div>
-          <section className="reviews">
-            <h3 className="reviews__title title title--bigger">Отзывы</h3>
-            <a className="button button--red-border button--big reviews__sumbit-button" href=" ">Оставить отзыв</a>
-            <div className="review">
-              <div className="review__wrapper">
-                <h4 className="review__title review__title--author title title--lesser">Иванов Максим</h4><span className="review__date">12 декабря</span>
-              </div>
-              <div className="rate review__rating-panel">
-                <svg width="16" height="16" aria-hidden="true">
-                  <use xlinkHref="#icon-full-star"></use>
-                </svg>
-                <svg width="16" height="16" aria-hidden="true">
-                  <use xlinkHref="#icon-full-star"></use>
-                </svg>
-                <svg width="16" height="16" aria-hidden="true">
-                  <use xlinkHref="#icon-full-star"></use>
-                </svg>
-                <svg width="16" height="16" aria-hidden="true">
-                  <use xlinkHref="#icon-full-star"></use>
-                </svg>
-                <svg width="16" height="16" aria-hidden="true">
-                  <use xlinkHref="#icon-star"></use>
-                </svg>
-                <p className="visually-hidden">Оценка: Хорошо</p>
-              </div>
-              <h4 className="review__title title title--lesser">Достоинства:</h4>
-              <p className="review__value">Хороший корпус, чистый звук, стурны хорошего качества</p>
-              <h4 className="review__title title title--lesser">Недостатки:</h4>
-              <p className="review__value">Тугие колонки</p>
-              <h4 className="review__title title title--lesser">Комментарий:</h4>
-              <p className="review__value">У гитары отличный цвет, хороше дерево. Тяжелая, в компдлекте неть чехла и ремня.</p>
-            </div>
-            <div className="review">
-              <div className="review__wrapper">
-                <h4 className="review__title review__title--author title title--lesser">Перова Ольга</h4><span className="review__date">12 декабря</span>
-              </div>
-              <div className="rate review__rating-panel">
-                <svg width="16" height="16" aria-hidden="true">
-                  <use xlinkHref="#icon-full-star"></use>
-                </svg>
-                <svg width="16" height="16" aria-hidden="true">
-                  <use xlinkHref="#icon-full-star"></use>
-                </svg>
-                <svg width="16" height="16" aria-hidden="true">
-                  <use xlinkHref="#icon-full-star"></use>
-                </svg>
-                <svg width="16" height="16" aria-hidden="true">
-                  <use xlinkHref="#icon-full-star"></use>
-                </svg>
-                <svg width="16" height="16" aria-hidden="true">
-                  <use xlinkHref="#icon-star"></use>
-                </svg>
-                <p className="visually-hidden">Оценка: Хорошо</p>
-              </div>
-              <h4 className="review__title title title--lesser">Достоинства:</h4>
-              <p className="review__value">Хороший корпус, чистый звук, стурны хорошего качества</p>
-              <h4 className="review__title title title--lesser">Недостатки:</h4>
-              <p className="review__value">Тугие колонки</p>
-              <h4 className="review__title title title--lesser">Комментарий:</h4>
-              <p className="review__value">У гитары отличный цвет, хороше дерево. Тяжелая, в компдлекте неть чехла и ремня. </p>
-            </div>
-            <div className="review">
-              <div className="review__wrapper">
-                <h4 className="review__title review__title--author title title--lesser">Преображенская  Ксения</h4><span className="review__date">12 декабря</span>
-              </div>
-              <div className="rate review__rating-panel">
-                <svg width="16" height="16" aria-hidden="true">
-                  <use xlinkHref="#icon-full-star"></use>
-                </svg>
-                <svg width="16" height="16" aria-hidden="true">
-                  <use xlinkHref="#icon-full-star"></use>
-                </svg>
-                <svg width="16" height="16" aria-hidden="true">
-                  <use xlinkHref="#icon-full-star"></use>
-                </svg>
-                <svg width="16" height="16" aria-hidden="true">
-                  <use xlinkHref="#icon-full-star"></use>
-                </svg>
-                <svg width="16" height="16" aria-hidden="true">
-                  <use xlinkHref="#icon-star"></use>
-                </svg>
-                <p className="visually-hidden">Оценка: Хорошо</p>
-              </div>
-              <h4 className="review__title title title--lesser">Достоинства:</h4>
-              <p className="review__value">Хороший корпус, чистый звук, стурны хорошего качества</p>
-              <h4 className="review__title title title--lesser">Недостатки:</h4>
-              <p className="review__value">Тугие колонки</p>
-              <h4 className="review__title title title--lesser">Комментарий:</h4>
-              <p className="review__value">У гитары отличный цвет, хороше дерево. Тяжелая, в компдлекте неть чехла и ремня. У гитары отличный цвет, хороше дерево. Тяжелая, в компдлекте неть чехла и ремня. У гитары отличный цвет, хороше дерево. Тяжелая, в компдлекте неть чехла и ремня. У гитары отличный цвет, хороше дерево. Тяжелая, в компдлекте неть чехла и ремня. </p>
-            </div>
-            <button className="button button--medium reviews__more-button">Показать еще отзывы</button><a className="button button--up button--red-border button--big reviews__up-button" href="#header">Наверх</a>
-          </section>
+          <Comments comments={comments} />
         </div>
       </main>
       <Footer />

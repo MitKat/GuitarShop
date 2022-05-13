@@ -7,6 +7,7 @@ export enum AppRoute {
 
 export enum APIRoute {
   Cards = '/guitars',
+  Comments = '/comments'
 }
 
 export enum NameSpace {

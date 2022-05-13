@@ -1,13 +1,23 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { generatePath, Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
+import { useAppDispatch, useAppSelector } from '../../hooks/main';
+import { fetchCommentsAction } from '../../store/api-actions';
 import { Card } from '../../types/card';
+import { Comment } from '../../types/comment';
+import Rating from '../rating/rating';
 
 type ProductCardProps = {
     card: Card,
 }
 
 function ProductCard({card}: ProductCardProps): JSX.Element {
+  const dispatch = useAppDispatch();
+  const comments: Comment[]= useAppSelector(({DATA}) => DATA.comments);
+
+  useEffect(() => {
+    dispatch(fetchCommentsAction(String(card.id)));
+  }, [card.id, dispatch]);
 
   const mouseOverHandler = () => {
     setMouseOver(card.id);
@@ -23,23 +33,8 @@ function ProductCard({card}: ProductCardProps): JSX.Element {
       <img src={card.previewImg}  width="75" height="190" alt={card.name} />
       <div className="product-card__info">
         <div className="rate product-card__rate">
-          <svg width="12" height="11" aria-hidden="true">
-            <use xlinkHref="#icon-full-star"></use>
-          </svg>
-          <svg width="12" height="11" aria-hidden="true">
-            <use xlinkHref="#icon-full-star"></use>
-          </svg>
-          <svg width="12" height="11" aria-hidden="true">
-            <use xlinkHref="#icon-full-star"></use>
-          </svg>
-          <svg width="12" height="11" aria-hidden="true">
-            <use xlinkHref="#icon-full-star"></use>
-          </svg>
-          <svg width="12" height="11" aria-hidden="true">
-            <use xlinkHref="#icon-star"></use>
-          </svg>
-          <p className="visually-hidden">Рейтинг: Хорошо</p>
-          <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>9</p>
+          <Rating rating={card.rating} />
+          <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>9 {comments.length}</p>
         </div>
         <p className="product-card__title">{card.name}</p>
         <p className="product-card__price"><span className="visually-hidden">Цена:</span>{`${card.price} ₽`}
