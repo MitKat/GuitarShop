@@ -4,11 +4,12 @@ import { TypeGuitarTranslation } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks/main';
 import useScrollTop from '../../hooks/use-scroll-top';
 import { fetchCommentsAction, fetchProductAction } from '../../store/api-actions';
-import { Comment } from '../../types/comment';
 import Breadcrumbs from '../breadcrumbs/breadcrumbs';
 import Comments from '../comments/comments';
 import Footer from '../footer/footer';
 import Header from '../header/header';
+import ModalFeedback from '../modal-feedback/modal-feedback';
+import ModalSuccessComment from '../modal-success-comment/modal-success-comment';
 import Rating from '../rating/rating';
 
 
@@ -16,13 +17,15 @@ function CardPage(): JSX.Element {
   const {id} = useParams();
   const dispatch = useAppDispatch();
   const product = useAppSelector(({DATA}) => DATA.product);
-  const comments: Comment[] = useAppSelector(({DATA}) => DATA.comments);
+  const comments = useAppSelector(({DATA}) => DATA.comments);
+  const isVisible = useAppSelector(({MAIN}) => MAIN.isVisible);
+  const isSuccess = useAppSelector(({MAIN}) => MAIN.isSuccess);
 
   useScrollTop();
 
   useEffect(() => {
-    dispatch(fetchProductAction(String(id)));
     dispatch(fetchCommentsAction(String(id)));
+    dispatch(fetchProductAction(String(id)));
   }, [id, dispatch]);
 
   const [isHiddenCharacteristic, setIsHiddenCharacteristic] = useState(false);
@@ -43,6 +46,8 @@ function CardPage(): JSX.Element {
       <Header />
       <main className="page-content">
         <div className="container">
+          {isVisible && <ModalFeedback productName={product.name} productId={product.id}/>}
+          {isSuccess && <ModalSuccessComment />}
           <h1 className="page-content__title title title--bigger">{product.name}</h1>
           <Breadcrumbs productName={product.name} />
           <div className="product-container">

@@ -15,6 +15,12 @@ export enum NameSpace {
   Data = 'DATA',
 }
 
+export enum HttpCode {
+  BadRequest = 400,
+  Unauthorized = 401,
+  NotFound = 404,
+}
+
 export const CARDS_PER_PAGE = 9;
 
 export const InitialProduct = {
@@ -35,3 +41,4 @@ export const TypeGuitarTranslation = new Map([
   ['ukulele', 'Укулеле'],
 ]);
 
+export const NAME_KEY_ESCAPE = 'Escape';
