@@ -1,4 +1,4 @@
-import { NAME_KEY_ESCAPE } from '../../const';
+// import { NAME_KEY_ESCAPE } from '../../const';
 import { useAppDispatch } from '../../hooks/main';
 import { closeModal } from '../../store/main-process/main-process';
 import './modal-success-comment.css';
@@ -6,10 +6,10 @@ import './modal-success-comment.css';
 function  ModalSuccessComment(): JSX.Element {
   const dispatch = useAppDispatch();
 
-  const HandlerKeyDown = (evt: { key: string; }) => {
-    if(evt.key === NAME_KEY_ESCAPE) {
-      dispatch(closeModal());
-    }
+  const HandlerKeyDown = () => {
+    // if(evt.key === NAME_KEY_ESCAPE  || evt.key === 'Esc') {
+    dispatch(closeModal());
+    // }
   };
 
   return (

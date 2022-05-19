@@ -42,7 +42,7 @@ function Comments({comments}: CommentsProps): JSX.Element {
           <div className="review" key={comment.id}>
             <div className="review__wrapper">
               <h4 className="review__title review__title--author title title--lesser">{comment.userName}</h4>
-              <span className="review__date">{getFormatDate(comment.createAt)}12 декабря</span>
+              <span className="review__date">{getFormatDate(comment.createAt)}</span>
             </div>
             <div className="rate review__rating-panel">
               <Rating rating={comment.rating} />
