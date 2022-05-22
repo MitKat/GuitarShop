@@ -1,3 +1,4 @@
+import React from 'react';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { TypeGuitarTranslation } from '../../const';
@@ -14,18 +15,18 @@ import Rating from '../rating/rating';
 
 
 function CardPage(): JSX.Element {
-  const {id} = useParams();
+  useScrollTop();
   const dispatch = useAppDispatch();
+  const {id} = useParams();
+
   const product = useAppSelector(({DATA}) => DATA.product);
   const comments = useAppSelector(({DATA}) => DATA.comments);
   const isVisible = useAppSelector(({MAIN}) => MAIN.isVisible);
   const isSuccess = useAppSelector(({MAIN}) => MAIN.isSuccess);
 
-  useScrollTop();
-
   useEffect(() => {
-    dispatch(fetchCommentsAction(String(id)));
     dispatch(fetchProductAction(String(id)));
+    dispatch(fetchCommentsAction(String(id)));
   }, [id, dispatch]);
 
   const [isHiddenCharacteristic, setIsHiddenCharacteristic] = useState(false);
@@ -59,7 +60,7 @@ function CardPage(): JSX.Element {
               <h2 className="product-container__title title title--big title--uppercase">{product.name}</h2>
               <div className="rate product-container__rating">
                 <Rating rating={product.rating} />
-                <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>{comments.length}</p>
+                <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>{comments[product.id]?.length}</p>
               </div>
               <div className="tabs">
                 {
@@ -113,7 +114,7 @@ function CardPage(): JSX.Element {
               <a className="button button--red button--big product-container__button" href=" ">Добавить в корзину</a>
             </div>
           </div>
-          <Comments comments={comments} />
+          <Comments comments={comments[String(id)]} />
         </div>
       </main>
       <Footer />
@@ -121,5 +122,5 @@ function CardPage(): JSX.Element {
   );
 }
 
-export default CardPage;
+export default React.memo(CardPage);
 

@@ -5,7 +5,7 @@ function Footer(): JSX.Element {
     <footer className="footer">
       <div className="footer__container container">
         <a className="footer__logo logo" href="/">
-          <img className="logo__img" width="70" height="70" src="./img/svg/logo.svg" alt="Логотип" />
+          <img className="logo__img" width="70" height="70" src={`${process.env.PUBLIC_URL}/img/svg/logo.svg`} alt="Логотип" />
         </a>
         <div className="socials footer__socials">
           <ul className="socials__list">

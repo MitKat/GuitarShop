@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { generatePath, Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks/main';
@@ -12,37 +12,27 @@ type ProductCardProps = {
 
 function ProductCard({card}: ProductCardProps): JSX.Element {
   const dispatch = useAppDispatch();
+
   useEffect(() => {
     dispatch(fetchCommentsAction(String(card.id)));
   }, [card.id, dispatch]);
 
   const comments = useAppSelector(({DATA}) => DATA.comments);
-  const mouseOverHandler = () => {
-    setMouseOver(card.id);
-  };
-  const mouseOutHandler = () => {
-    setMouseOver(-1);
-  };
-
-  const [mouseOver, setMouseOver] = useState(-1);
-
-  // eslint-disable-next-line no-console
-  console.log(comments.length);
 
   return (
-    <div className="product-card" onMouseOver={mouseOverHandler} onMouseOut={mouseOutHandler}>
+    <div className="product-card">
       <img src={`${process.env.PUBLIC_URL}/${card.previewImg}`}  width="75" height="190" alt={card.name} />
       <div className="product-card__info">
         <div className="rate product-card__rate">
           <Rating rating={card.rating} />
-          <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>{comments.length}</p>
+          <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>{comments[card.id]?.length}</p>
         </div>
         <p className="product-card__title">{card.name}</p>
         <p className="product-card__price"><span className="visually-hidden">Цена:</span>{`${card.price} ₽`}
         </p>
       </div>
       <div className="product-card__buttons">
-        <Link className="button button--mini" to={generatePath(AppRoute.CardPage, {id: String(mouseOver)})}>Подробнее</Link>
+        <Link className="button button--mini" to={generatePath(AppRoute.CardPage, {id: String(card.id)})}>Подробнее</Link>
         <a className="button button--red button--mini button--add-to-cart" href="/">Купить</a>
       </div>
     </div>

@@ -1,15 +1,20 @@
+/* eslint-disable no-console */
 import { useState } from 'react';
-import { generatePath, Link} from 'react-router-dom';
+import { generatePath, Link, useParams} from 'react-router-dom';
 import { AppRoute } from '../../const';
+
+const PAGINATION_START = 1;
 
 type PaginationProps = {
     countPage: number;
 }
 
 function Pagination({countPage}: PaginationProps): JSX.Element {
-  const [pageActual, setPageActual] = useState(1);
-  const numbersPage = [];
+  const {pageNumber} = useParams();
 
+  const [pageActual, setPageActual] = useState(Number(pageNumber) || PAGINATION_START);
+
+  const numbersPage = [];
   for (let i=1; i <= countPage; i++) {
     numbersPage.push(i);
   }

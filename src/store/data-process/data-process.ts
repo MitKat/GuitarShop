@@ -1,11 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { InitialProduct, NameSpace } from '../../const';
+import { Card } from '../../types/card';
+import { Comment } from '../../types/comment';
 
-const initialState = {
+interface InitialState {
+  catalogCards: Card[];
+  product: Card;
+  isDataLoaded: boolean;
+  comments: {[guitarId: string]: Comment[]};
+}
+
+const initialState: InitialState = {
   catalogCards: [],
   product: InitialProduct,
   isDataLoaded: false,
-  comments: [],
+  comments: {},
 };
 
 export const dataProcess = createSlice({
@@ -20,7 +29,10 @@ export const dataProcess = createSlice({
       state.product = action.payload;
     },
     loadComments: (state, action) => {
-      state.comments = action.payload;
+      state.comments = {
+        ...state.comments,
+        [action.payload.id]: action.payload.data,
+      };
     },
   },
 });

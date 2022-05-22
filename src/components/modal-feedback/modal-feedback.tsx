@@ -67,7 +67,7 @@ function ModalFeedback({productName, productId}: ModalFeedbackProps): JSX.Elemen
     dispatch(openModalSuccess());
   };
 
-  const HandlerKeyDown = (evt: { key: string; }) => {
+  const handleKeyDown = (evt: { key: string; }) => {
     if(evt.key === NAME_KEY_ESCAPE) {
       dispatch(closeModal());
     }
@@ -75,7 +75,7 @@ function ModalFeedback({productName, productId}: ModalFeedbackProps): JSX.Elemen
 
   return (
     <FocusLock>
-      <div className='modal-feedback' onKeyDown={HandlerKeyDown}>
+      <div className='modal-feedback' onKeyDown={handleKeyDown}>
         <div className="modal is-active modal--review modal-for-ui-kit">
           <div className="modal__wrapper">
             <div className="modal__overlay" data-close-modal onClick={() => dispatch(closeModal())}></div>

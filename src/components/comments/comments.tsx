@@ -1,31 +1,35 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useAppDispatch } from '../../hooks/main';
 import { openModal } from '../../store/main-process/main-process';
 import { Comment } from '../../types/comment';
 import Rating from '../rating/rating';
 
-type CommentsProps = {
-    comments: Comment[];
-}
-
 const COMMENTS_SHOW_DEFAULT = 3;
-let COMMENTS_SHOW_MORE = 3;
+const COMMENTS_SHOW_MORE = 3;
 
+type CommentsProps = {
+  comments: Comment[];
+}
 
 function Comments({comments}: CommentsProps): JSX.Element {
   const dispatch = useAppDispatch();
-  const commentsSort = [...comments].sort((commentA, commentB) => (Number(new Date(commentB.createAt)) - Number(new Date(commentA.createAt))));
-  const [commentsRender, setCommentsRender] = useState(commentsSort.slice(COMMENTS_SHOW_DEFAULT));
   const [buttonShow, setButtonShow] = useState(true);
+  const [commentsAmountRender, setCommentsAmountRender] = useState(COMMENTS_SHOW_DEFAULT);
 
-  const HandlerRenderComments = () => {
-    COMMENTS_SHOW_MORE += COMMENTS_SHOW_MORE;
+  const commentsRender = useMemo(() => {
+    const commentsSort = [...comments].sort((commentA, commentB) =>
+      (Number(new Date(commentB.createAt)) - Number(new Date(commentA.createAt))),
+    );
+    return commentsSort.slice(0, commentsAmountRender);
+  }, [comments, commentsAmountRender]);
 
-    if (comments.length <= COMMENTS_SHOW_MORE) {
+  const handleShowMoreCLick = () => {
+    const commentsAmountShowMore = commentsAmountRender + COMMENTS_SHOW_MORE;
+    setCommentsAmountRender(commentsAmountShowMore);
+
+    if (comments.length <= commentsAmountShowMore) {
       setButtonShow(false);
     }
-
-    setCommentsRender(commentsSort.slice(0, COMMENTS_SHOW_MORE));
   };
 
   const getFormatDate = (date: string) => {
@@ -57,7 +61,7 @@ function Comments({comments}: CommentsProps): JSX.Element {
         ))
       }
       <a href='#header' className="button button--up button--red-border button--big reviews__up-button">Наверх</a>
-      {buttonShow && <button className="button button--medium reviews__more-button" onClick={HandlerRenderComments}>Показать еще отзывы</button>}
+      {(buttonShow && (comments.length > COMMENTS_SHOW_DEFAULT)) && <button className="button button--medium reviews__more-button" onClick={handleShowMoreCLick}>Показать еще отзывы</button>}
     </section>
   );
 }
