@@ -32,7 +32,7 @@ function CardPage(): JSX.Element {
   const [isHiddenCharacteristic, setIsHiddenCharacteristic] = useState(false);
   const [isHiddenDescription, setIsHiddenDescription] = useState(true);
 
-  const HandleChangeTab = () => {
+  const handleChangeTab = () => {
     if (isHiddenCharacteristic) {
       setIsHiddenCharacteristic(false);
       setIsHiddenDescription(true);
@@ -67,7 +67,7 @@ function CardPage(): JSX.Element {
                   isHiddenCharacteristic ?
                     <a className='button button--medium tabs__button  button--black-border'
                       href="#characteristics"
-                      onClick={HandleChangeTab}
+                      onClick={handleChangeTab}
                     >Характеристики
                     </a>
                     :
@@ -80,7 +80,7 @@ function CardPage(): JSX.Element {
                   isHiddenDescription ?
                     <a className='button button--medium tabs__button button--black-border'
                       href="#description"
-                      onClick={HandleChangeTab}
+                      onClick={handleChangeTab}
                     >Описание
                     </a>
                     :

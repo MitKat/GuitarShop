@@ -1,7 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { NameSpace } from '../../const';
 
-const initialState = {
+interface InitialState {
+  isVisible: boolean;
+  isSuccess: boolean;
+}
+const initialState: InitialState = {
   isVisible: false,
   isSuccess: false,
 };

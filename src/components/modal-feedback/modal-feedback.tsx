@@ -87,6 +87,7 @@ function ModalFeedback({productName, productId}: ModalFeedbackProps): JSX.Elemen
                   <div className="form-review__name-wrapper">
                     <label className="form-review__label form-review__label--required" htmlFor="user-name">Ваше Имя</label>
                     <input className="form-review__input form-review__input--name"
+                      data-testid="userName"
                       value={userName}
                       onChange={(evt:ChangeEvent<HTMLInputElement>) => setUserName(evt.target.value)}
                       id="user-name" type="text" autoComplete="off" autoFocus
@@ -113,19 +114,25 @@ function ModalFeedback({productName, productId}: ModalFeedbackProps): JSX.Elemen
                   </div>
                 </div>
                 <label className="form-review__label form-review__label--required" htmlFor="advantage">Достоинства</label>
-                <input className="form-review__input" id="advantage" type="text" autoComplete="off"
+                <input className="form-review__input" id="advantage"
+                  type="text" autoComplete="off"
+                  data-testid="advantage"
                   value={advantage}
                   onChange={(evt:ChangeEvent<HTMLInputElement>) => setAdvantage(evt.target.value)}
                 />
                 <p className="form-review__warning">{(advantage.length === 0) ? 'Заполните поле' : '.'}</p>
                 <label className="form-review__label form-review__label--required" htmlFor="disadv">Недостатки</label>
-                <input className="form-review__input" id="disadv" type="text" autoComplete="off"
+                <input className="form-review__input" id="disadv"
+                  type="text" autoComplete="off"
+                  data-testid="disadv"
                   value={disadvantage}
                   onChange={(evt:ChangeEvent<HTMLInputElement>) => setDisadvantage(evt.target.value)}
                 />
                 <p className="form-review__warning">{(disadvantage.length === 0) ? 'Заполните поле' : '.'}</p>
                 <label className="form-review__label form-review__label--required" htmlFor="comment">Комментарий</label>
-                <textarea className="form-review__input form-review__input--textarea" id="comment" rows={10} autoComplete="off"
+                <textarea className="form-review__input form-review__input--textarea"
+                  id="comment" rows={10} autoComplete="off"
+                  data-testid="comment"
                   value={comment}
                   onChange={(evt:ChangeEvent<HTMLTextAreaElement>) => setComment(evt.target.value)}
                 >

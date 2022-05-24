@@ -33,9 +33,13 @@ function  ModalSuccessComment(): JSX.Element {
             </svg>
             <p className="modal__message">Спасибо за ваш отзыв!</p>
             <div className="modal__button-container modal__button-container--review">
-              <button className="button button--small modal__button modal__button--review" onClick={() => dispatch(closeModal())}>К покупкам!</button>
+              <button className="button button--small modal__button modal__button--review"
+                onClick={() => dispatch(closeModal())} autoFocus
+              >
+                К покупкам!
+              </button>
             </div>
-            <button className="modal__close-btn button-cross" type="button" aria-label="Закрыть" onClick={() => dispatch(closeModal())} autoFocus>
+            <button className="modal__close-btn button-cross" type="button" aria-label="Закрыть" onClick={() => dispatch(closeModal())} >
               <span className="button-cross__icon"></span><span className="modal__close-btn-interactive-area"></span>
             </button>
           </div>

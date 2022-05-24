@@ -1,50 +1,66 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { store } from '.';
+import { AxiosInstance } from 'axios';
 import { APIRoute } from '../const';
-import { api } from '../services/api';
 import { loadCards, loadComments, loadProduct } from './data-process/data-process';
 import { CommentData } from '../types/comment-data';
 import { errorHandle } from '../services/error-handle';
+import { AppDispatch, State } from '../types/state';
 
 
-export const fetchCardsAction = createAsyncThunk(
+export const fetchCardsAction = createAsyncThunk<void, undefined, {
+  dispatch: AppDispatch,
+  state: State,
+  extra: AxiosInstance
+}>(
   'data/fetchCards',
-  async () => {
+  async (_arg, {dispatch, extra: api}) => {
     try {
       const {data} = await api.get(`${APIRoute.Cards}`);
-      store.dispatch(loadCards(data));
+      dispatch(loadCards(data));
     } catch (error) {
       errorHandle(error);
     }
   },
 );
 
-export const fetchProductAction = createAsyncThunk(
+export const fetchProductAction = createAsyncThunk<void, string, {
+  dispatch: AppDispatch,
+  state: State,
+  extra: AxiosInstance
+}>(
   'data/fetchProduct',
-  async (id: string) => {
+  async (id, {dispatch, extra: api}) => {
     try {
       const {data} = await api.get(`${APIRoute.Cards}/${id}`);
-      store.dispatch(loadProduct(data));
+      dispatch(loadProduct(data));
     } catch (error) {
       errorHandle(error);
     }
   },
 );
 
-export const fetchCommentsAction = createAsyncThunk(
+export const fetchCommentsAction = createAsyncThunk<void, string, {
+  dispatch: AppDispatch,
+  state: State,
+  extra: AxiosInstance
+}>(
   'data/fetchComments',
-  async (id: string) => {
+  async (id, {dispatch, extra: api}) => {
     const {data} = await api.get(`${APIRoute.Cards}/${id}${APIRoute.Comments}`);
-    store.dispatch(loadComments({data, id}));
+    dispatch(loadComments({data, id}));
   },
 );
 
-export const sendComment = createAsyncThunk(
+export const sendComment = createAsyncThunk<void, CommentData, {
+  dispatch: AppDispatch,
+  state: State,
+  extra: AxiosInstance
+}>(
   'comments/newComment',
-  async ({guitarId, userName, advantage, disadvantage, comment, rating}: CommentData) => {
+  async ({guitarId, userName, advantage, disadvantage, comment, rating}, {dispatch, extra: api}) => {
     try {
       const {data} = await api.post(APIRoute.Comments, {guitarId, userName, advantage, disadvantage, comment, rating});
-      store.dispatch(loadComments({data, guitarId}));
+      dispatch(loadComments({data, guitarId}));
     } catch (error) {
       errorHandle(error);
     }

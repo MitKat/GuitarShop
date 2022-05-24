@@ -36,7 +36,10 @@ function Pagination({countPage}: PaginationProps): JSX.Element {
       </li>}
         {
           numbersPage.map((number) => (
-            <li className={pageActual === number ? 'pagination__page pagination__page--active' : 'pagination__page'} key={number}>
+            <li className={pageActual === number ? 'pagination__page pagination__page--active' : 'pagination__page'}
+              key={number}
+              data-testid='pagination-page'
+            >
               <Link className="link pagination__page-link"
                 to={generatePath(AppRoute.Catalog, {pageNumber: `${number}`})}
                 onClick={() => (setPageActual(number))}

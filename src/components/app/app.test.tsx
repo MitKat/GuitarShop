@@ -1,8 +1,75 @@
-import {render, screen} from '@testing-library/react';
+import { configureMockStore } from '@jedmao/redux-mock-store';
+import { render, screen } from '@testing-library/react';
+import { createBrowserHistory } from 'history';
+import { Provider } from 'react-redux';
+import { MemoryRouter, Router } from 'react-router-dom';
+import thunk from 'redux-thunk';
+import { AppRoute, NameSpace } from '../../const';
+import { createAPI } from '../../services/api';
+import { mockTestCard, mockTestCards, mockTestComments } from '../mock/mock';
 import App from './app';
 
-test('Renders app-component', () => {
-  render(<App />);
-  const textElement = screen.getByText(/Hello, world!/i);
-  expect(textElement).toBeInTheDocument();
+describe('Component App', () => {
+  const api = createAPI();
+  const middlewares = [thunk.withExtraArgument(api)];
+
+  const mockStore = configureMockStore(middlewares);
+
+  const fakeStore = mockStore({
+    [NameSpace.Data]: {
+      catalogCards: mockTestCards,
+      product: mockTestCard,
+      isDataLoaded: true,
+      comments: {'1': mockTestComments},
+    },
+    [NameSpace.Main]: {
+      isVisible: false,
+      isSuccess: false,
+    },
+  });
+
+  const history = createBrowserHistory();
+
+  const fakeApp = (
+    <Provider store={fakeStore}>
+      <Router location={history.location} navigator={history}>
+        <App/>
+      </Router>
+    </Provider>
+  );
+
+
+  it('should render MainPage when user navigate to "/"', () => {
+    history.push(AppRoute.Main);
+    render(fakeApp);
+
+    expect(screen.getByText(/Главная/i)).toBeInTheDocument();
+  });
+
+  it('should render MainPage when user navigate to "/catalog/page_pageNumber"', () => {
+    history.push('/catalog/page_2');
+    render(fakeApp);
+
+    expect(screen.getByText(/Каталог гитар/i)).toBeInTheDocument();
+  });
+
+  it('should render CardPage when user navigate to "/product/id"', () => {
+    history.push(`/product/${mockTestCard.id}`);
+    render(fakeApp);
+
+    expect(screen.getByText(`${mockTestCard.name}`)).toBeInTheDocument();
+  });
+
+  it('should render NotFoundPage when user navigate to "/*"', () => {
+
+    render(
+      <Provider store={fakeStore}>
+        <MemoryRouter initialEntries={['/non-page']}>
+          <App/>
+        </MemoryRouter>
+      </Provider>,
+    );
+
+    expect(screen.getByText(/Вернуться на главную страницу/i)).toBeInTheDocument();
+  });
 });
