@@ -114,7 +114,7 @@ function CardPage(): JSX.Element {
               <a className="button button--red button--big product-container__button" href=" ">Добавить в корзину</a>
             </div>
           </div>
-          <Comments comments={comments[String(id)]} />
+          <Comments productId={String(id)} />
         </div>
       </main>
       <Footer />

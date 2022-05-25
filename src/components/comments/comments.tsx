@@ -1,33 +1,34 @@
+import React from 'react';
 import { useMemo, useState } from 'react';
-import { useAppDispatch } from '../../hooks/main';
+import { useAppDispatch, useAppSelector } from '../../hooks/main';
 import { openModal } from '../../store/main-process/main-process';
-import { Comment } from '../../types/comment';
 import Rating from '../rating/rating';
 
 const COMMENTS_SHOW_DEFAULT = 3;
 const COMMENTS_SHOW_MORE = 3;
 
 type CommentsProps = {
-  comments: Comment[];
+  productId: string;
 }
 
-function Comments({comments}: CommentsProps): JSX.Element {
+function Comments({productId}: CommentsProps): JSX.Element {
   const dispatch = useAppDispatch();
   const [buttonShow, setButtonShow] = useState(true);
   const [commentsAmountRender, setCommentsAmountRender] = useState(COMMENTS_SHOW_DEFAULT);
+  const { comments } = useAppSelector(({DATA}) => DATA);
 
   const commentsRender = useMemo(() => {
-    const commentsSort = [...comments].sort((commentA, commentB) =>
+    const commentsSort = [...comments[productId]].sort((commentA, commentB) =>
       (Number(new Date(commentB.createAt)) - Number(new Date(commentA.createAt))),
     );
     return commentsSort.slice(0, commentsAmountRender);
-  }, [comments, commentsAmountRender]);
+  }, [comments, commentsAmountRender, productId]);
 
   const handleShowMoreCLick = () => {
     const commentsAmountShowMore = commentsAmountRender + COMMENTS_SHOW_MORE;
     setCommentsAmountRender(commentsAmountShowMore);
 
-    if (comments.length <= commentsAmountShowMore) {
+    if (comments[productId].length <= commentsAmountShowMore) {
       setButtonShow(false);
     }
   };
@@ -61,9 +62,9 @@ function Comments({comments}: CommentsProps): JSX.Element {
         ))
       }
       <a href='#header' className="button button--up button--red-border button--big reviews__up-button">Наверх</a>
-      {(buttonShow && (comments.length > COMMENTS_SHOW_DEFAULT)) && <button className="button button--medium reviews__more-button" onClick={handleShowMoreCLick}>Показать еще отзывы</button>}
+      {(buttonShow && (comments[productId].length > COMMENTS_SHOW_DEFAULT)) && <button className="button button--medium reviews__more-button" onClick={handleShowMoreCLick}>Показать еще отзывы</button>}
     </section>
   );
 }
 
-export default Comments;
+export default React.memo(Comments);

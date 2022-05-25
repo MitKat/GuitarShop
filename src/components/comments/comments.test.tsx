@@ -20,6 +20,7 @@ describe('Component: Comments', () => {
       product: mockTestCard,
       isDataLoaded: true,
       comments: {'1': mockTestComments},
+
     },
     [NameSpace.Main]: {
       isVisible: false,
@@ -31,7 +32,7 @@ describe('Component: Comments', () => {
     render(
       <Provider store={fakeStore}>
         <BrowserRouter>
-          <Comments comments={mockTestComments}/>
+          <Comments productId='1'/>
         </BrowserRouter>
       </Provider>,
     );
