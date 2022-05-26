@@ -19,15 +19,16 @@ function CardPage(): JSX.Element {
   const dispatch = useAppDispatch();
   const {id} = useParams();
 
+  useEffect(() => {
+    dispatch(fetchProductAction(String(id)));
+    dispatch(fetchCommentsAction(String(id)));
+  }, [id, dispatch]);
+
   const product = useAppSelector(({DATA}) => DATA.product);
   const comments = useAppSelector(({DATA}) => DATA.comments);
   const isVisible = useAppSelector(({MAIN}) => MAIN.isVisible);
   const isSuccess = useAppSelector(({MAIN}) => MAIN.isSuccess);
 
-  useEffect(() => {
-    dispatch(fetchProductAction(String(id)));
-    dispatch(fetchCommentsAction(String(id)));
-  }, [id, dispatch]);
 
   const [isHiddenCharacteristic, setIsHiddenCharacteristic] = useState(false);
   const [isHiddenDescription, setIsHiddenDescription] = useState(true);
@@ -114,7 +115,7 @@ function CardPage(): JSX.Element {
               <a className="button button--red button--big product-container__button" href=" ">Добавить в корзину</a>
             </div>
           </div>
-          <Comments productId={String(id)} />
+          {comments[product.id]?.length && <Comments comments={comments[product.id]} />}
         </div>
       </main>
       <Footer />

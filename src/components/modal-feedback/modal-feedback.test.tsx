@@ -26,16 +26,6 @@ describe('component: ModalFeedback', () => {
     expect(screen.getByText(/Недостатки/i)).toBeInTheDocument();
     expect(screen.getByText(/Комментарий/i)).toBeInTheDocument();
 
-    // userEvent.type(screen.getByTestId('userName'), 'Maria');
-    // userEvent.type(screen.getByTestId('advantage'), 'Super');
-    // userEvent.type(screen.getByTestId('disadv'), 'Not');
-    // userEvent.type(screen.getByTestId('comment'), 'Discription');
-
-    // expect(screen.getByDisplayValue(/Maria/i)).toBeInTheDocument();
-    // expect(screen.getByDisplayValue(/Super/i)).toBeInTheDocument();
-    // expect(screen.getByDisplayValue(/not/i)).toBeInTheDocument();
-    // expect(screen.getByDisplayValue(/Discription/i)).toBeInTheDocument();
-
     const buttonElement = screen.getByText(/Отправить отзыв/i);
     expect(buttonElement).toBeInTheDocument();
 

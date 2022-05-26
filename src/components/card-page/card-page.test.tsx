@@ -1,6 +1,5 @@
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { BrowserRouter } from 'react-router-dom';
@@ -27,8 +26,6 @@ describe('Component: CardPage', () => {
     },
   });
 
-  const handleChangeTab = jest.fn();
-
   it('should render correctly', () => {
     render(
       <Provider store={fakeStore}>
@@ -37,12 +34,10 @@ describe('Component: CardPage', () => {
         </BrowserRouter>
       </Provider>,
     );
-    expect(screen.getByText(`${mockTestCard.name}`)).toBeInTheDocument();
+    expect(screen.getByText(`${mockTestCard.description}`)).toBeInTheDocument();
     expect(screen.getByRole('link', {name: /Добавить в корзину/i})).toBeInTheDocument();
     expect(screen.getByRole('link', {name: /Характеристики/i})).toBeInTheDocument();
     expect(screen.getByRole('link', {name: /Описание/i})).toBeInTheDocument();
 
-    userEvent.click(screen.getByText(/Характеристики/i));
-    expect(handleChangeTab).toBeCalled();
   });
 });

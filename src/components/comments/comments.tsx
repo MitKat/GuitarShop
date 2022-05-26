@@ -1,36 +1,35 @@
 import React from 'react';
-import { useMemo, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks/main';
+import { useState, useMemo } from 'react';
+import { useAppDispatch } from '../../hooks/main';
 import { openModal } from '../../store/main-process/main-process';
+import { Comment } from '../../types/comment';
 import Rating from '../rating/rating';
 
 const COMMENTS_SHOW_DEFAULT = 3;
 const COMMENTS_SHOW_MORE = 3;
 
 type CommentsProps = {
-  productId: string;
+  comments: Comment[];
 }
 
-function Comments({productId}: CommentsProps): JSX.Element {
+function Comments({comments}: CommentsProps): JSX.Element {
   const dispatch = useAppDispatch();
-  const [buttonShow, setButtonShow] = useState(true);
   const [commentsAmountRender, setCommentsAmountRender] = useState(COMMENTS_SHOW_DEFAULT);
-  const { comments } = useAppSelector(({DATA}) => DATA);
 
-  const commentsRender = useMemo(() => {
-    const commentsSort = [...comments[productId]].sort((commentA, commentB) =>
+  const commentsToRender = useMemo(() => {
+    if (!comments) {
+      return [];
+    }
+    const commentsSort = [...comments].sort((commentA, commentB) =>
       (Number(new Date(commentB.createAt)) - Number(new Date(commentA.createAt))),
     );
     return commentsSort.slice(0, commentsAmountRender);
-  }, [comments, commentsAmountRender, productId]);
+
+  }, [comments, commentsAmountRender]);
 
   const handleShowMoreCLick = () => {
     const commentsAmountShowMore = commentsAmountRender + COMMENTS_SHOW_MORE;
     setCommentsAmountRender(commentsAmountShowMore);
-
-    if (comments[productId].length <= commentsAmountShowMore) {
-      setButtonShow(false);
-    }
   };
 
   const getFormatDate = (date: string) => {
@@ -38,12 +37,14 @@ function Comments({productId}: CommentsProps): JSX.Element {
     return newDate.toLocaleString('ru-RU', {month: 'long', day: 'numeric'});
   };
 
+  const isShowMoreButtonVisible = commentsAmountRender < comments?.length;
+
   return (
     <section className="reviews">
       <h3 className="reviews__title title title--bigger">Отзывы</h3>
       <button className="button button--red-border button--big reviews__sumbit-button" onClick={() => dispatch(openModal())}>Оставить отзыв</button>
       {
-        commentsRender.map((comment) => (
+        commentsToRender.map((comment) => (
           <div className="review" key={comment.id}>
             <div className="review__wrapper">
               <h4 className="review__title review__title--author title title--lesser">{comment.userName}</h4>
@@ -62,9 +63,10 @@ function Comments({productId}: CommentsProps): JSX.Element {
         ))
       }
       <a href='#header' className="button button--up button--red-border button--big reviews__up-button">Наверх</a>
-      {(buttonShow && (comments[productId].length > COMMENTS_SHOW_DEFAULT)) && <button className="button button--medium reviews__more-button" onClick={handleShowMoreCLick}>Показать еще отзывы</button>}
+      {isShowMoreButtonVisible && <button className="button button--medium reviews__more-button" onClick={handleShowMoreCLick}>Показать еще отзывы</button>}
     </section>
   );
+
 }
 
 export default React.memo(Comments);

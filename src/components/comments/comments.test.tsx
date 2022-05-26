@@ -32,7 +32,7 @@ describe('Component: Comments', () => {
     render(
       <Provider store={fakeStore}>
         <BrowserRouter>
-          <Comments productId='1'/>
+          <Comments comments={mockTestComments}/>
         </BrowserRouter>
       </Provider>,
     );
