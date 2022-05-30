@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState, useMemo } from 'react';
+import { Scroll } from '../../const';
 import { useAppDispatch } from '../../hooks/main';
 import { openModal } from '../../store/main-process/main-process';
 import { Comment } from '../../types/comment';
@@ -32,6 +33,11 @@ function Comments({comments}: CommentsProps): JSX.Element {
     setCommentsAmountRender(commentsAmountShowMore);
   };
 
+  const handleOpenModal = () => {
+    dispatch(openModal());
+    document.body.style.overflow = Scroll.NoScrolling;
+  };
+
   const getFormatDate = (date: string) => {
     const newDate = new Date(date);
     return newDate.toLocaleString('ru-RU', {month: 'long', day: 'numeric'});
@@ -42,7 +48,11 @@ function Comments({comments}: CommentsProps): JSX.Element {
   return (
     <section className="reviews">
       <h3 className="reviews__title title title--bigger">Отзывы</h3>
-      <button className="button button--red-border button--big reviews__sumbit-button" onClick={() => dispatch(openModal())}>Оставить отзыв</button>
+      <button className="button button--red-border button--big reviews__sumbit-button"
+        onClick={handleOpenModal}
+      >
+        Оставить отзыв
+      </button>
       {
         commentsToRender.map((comment) => (
           <div className="review" key={comment.id}>

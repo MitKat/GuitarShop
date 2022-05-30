@@ -21,7 +21,7 @@ function CardPage(): JSX.Element {
 
   useEffect(() => {
     dispatch(fetchProductAction(String(id)));
-    dispatch(fetchCommentsAction(String(id)));
+    dispatch(fetchCommentsAction(Number(id)));
   }, [id, dispatch]);
 
   const product = useAppSelector(({DATA}) => DATA.product);

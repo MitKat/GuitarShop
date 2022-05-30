@@ -21,6 +21,11 @@ export enum HttpCode {
   NotFound = 404,
 }
 
+export enum Scroll {
+  NoScrolling = 'hidden',
+  Scrolling = 'scroll',
+}
+
 export const CARDS_PER_PAGE = 9;
 
 export const InitialProduct = {

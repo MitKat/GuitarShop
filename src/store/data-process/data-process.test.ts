@@ -32,7 +32,7 @@ describe('Reducer: dataProcess', () => {
   });
 
   it('should load comments', () => {
-    expect(dataProcess.reducer(state, loadComments(mockTestComments)))
+    expect(dataProcess.reducer(state, loadComments({1: mockTestComments})))
       .toEqual({...state, comments: {},
       });
   });

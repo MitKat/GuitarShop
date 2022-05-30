@@ -14,7 +14,7 @@ function ProductCard({card}: ProductCardProps): JSX.Element {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(fetchCommentsAction(String(card.id)));
+    dispatch(fetchCommentsAction(card.id));
   }, [card.id, dispatch]);
 
   const {comments} = useAppSelector(({DATA}) => DATA);

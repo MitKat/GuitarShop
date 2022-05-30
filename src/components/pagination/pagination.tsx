@@ -22,6 +22,10 @@ function Pagination({countPage}: PaginationProps): JSX.Element {
   const prevPage = pageActual-1;
   const nextPage = pageActual+1;
 
+  const handleSwitchToPage = (number: number) => () => {
+    setPageActual(number);
+  };
+
   return (
     <div className="pagination page-content__pagination">
       <ul className="pagination__list">
@@ -29,7 +33,7 @@ function Pagination({countPage}: PaginationProps): JSX.Element {
       <li className='pagination__page pagination__page--next'>
         <Link className="link pagination__page-link"
           to={generatePath(AppRoute.Catalog, {pageNumber: `${prevPage}`})}
-          onClick={() => (setPageActual(prevPage))}
+          onClick={handleSwitchToPage(prevPage)}
         >
           Назад
         </Link>
@@ -42,7 +46,7 @@ function Pagination({countPage}: PaginationProps): JSX.Element {
             >
               <Link className="link pagination__page-link"
                 to={generatePath(AppRoute.Catalog, {pageNumber: `${number}`})}
-                onClick={() => (setPageActual(number))}
+                onClick={handleSwitchToPage(number)}
               >
                 {number}
               </Link>
@@ -53,7 +57,7 @@ function Pagination({countPage}: PaginationProps): JSX.Element {
         <li className='pagination__page pagination__page--next'>
           <Link className="link pagination__page-link"
             to={generatePath(AppRoute.Catalog, {pageNumber: `${nextPage}`})}
-            onClick={() => (setPageActual(nextPage))}
+            onClick={handleSwitchToPage(nextPage)}
           >
             Далее
           </Link>
@@ -64,3 +68,4 @@ function Pagination({countPage}: PaginationProps): JSX.Element {
 }
 
 export default Pagination;
+

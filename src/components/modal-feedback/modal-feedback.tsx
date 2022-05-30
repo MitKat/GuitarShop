@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, Fragment, useState } from 'react';
 import FocusLock from 'react-focus-lock';
-import { NAME_KEY_ESCAPE } from '../../const';
+import { NAME_KEY_ESCAPE, Scroll } from '../../const';
 import { useAppDispatch } from '../../hooks/main';
 import { sendComment } from '../../store/api-actions';
 import { closeModal, openModalSuccess } from '../../store/main-process/main-process';
@@ -70,7 +70,13 @@ function ModalFeedback({productName, productId}: ModalFeedbackProps): JSX.Elemen
   const handleKeyDown = (evt: { key: string; }) => {
     if(evt.key === NAME_KEY_ESCAPE) {
       dispatch(closeModal());
+      document.body.style.overflow = Scroll.Scrolling;
     }
+  };
+
+  const handleCloseModal = () => {
+    dispatch(closeModal());
+    document.body.style.overflow = Scroll.Scrolling;
   };
 
   return (
@@ -78,7 +84,7 @@ function ModalFeedback({productName, productId}: ModalFeedbackProps): JSX.Elemen
       <div className='modal-feedback' onKeyDown={handleKeyDown}>
         <div className="modal is-active modal--review modal-for-ui-kit">
           <div className="modal__wrapper">
-            <div className="modal__overlay" data-close-modal onClick={() => dispatch(closeModal())}></div>
+            <div className="modal__overlay" data-close-modal onClick={handleCloseModal}></div>
             <div className="modal__content">
               <h2 className="modal__header modal__header--review title title--medium">Оставить отзыв</h2>
               <h3 className="modal__product-name title title--medium-20 title--uppercase">{productName}</h3>
@@ -144,7 +150,7 @@ function ModalFeedback({productName, productId}: ModalFeedbackProps): JSX.Elemen
                 Отправить отзыв
                 </button>
               </form>
-              <button className="modal__close-btn button-cross" type="button" aria-label="Закрыть" onClick={() => dispatch(closeModal())}>
+              <button className="modal__close-btn button-cross" type="button" aria-label="Закрыть" onClick={handleCloseModal}>
                 <span className="button-cross__icon"></span><span className="modal__close-btn-interactive-area"></span>
               </button>
             </div>

@@ -52,7 +52,7 @@ describe('Async actions', () => {
       .reply(200, fakeComments);
 
     const store = mockStore();
-    await store.dispatch(fetchCommentsAction('1'));
+    await store.dispatch(fetchCommentsAction(1));
     const actions = store.getActions().map(({type}) => type);
     expect(actions).toContain(loadComments.toString());
   });

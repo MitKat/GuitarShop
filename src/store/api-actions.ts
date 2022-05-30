@@ -39,15 +39,15 @@ export const fetchProductAction = createAsyncThunk<void, string, {
   },
 );
 
-export const fetchCommentsAction = createAsyncThunk<void, string, {
+export const fetchCommentsAction = createAsyncThunk<void, number, {
   dispatch: AppDispatch,
   state: State,
   extra: AxiosInstance
 }>(
   'data/fetchComments',
-  async (id, {dispatch, extra: api}) => {
+  async (id: number, {dispatch, extra: api}) => {
     const {data} = await api.get(`${APIRoute.Cards}/${id}${APIRoute.Comments}`);
-    dispatch(loadComments({data, id}));
+    dispatch(loadComments({id, data}));
   },
 );
 
@@ -59,8 +59,8 @@ export const sendComment = createAsyncThunk<void, CommentData, {
   'comments/newComment',
   async ({guitarId, userName, advantage, disadvantage, comment, rating}, {dispatch, extra: api}) => {
     try {
-      const {data} = await api.post(APIRoute.Comments, {guitarId, userName, advantage, disadvantage, comment, rating});
-      dispatch(loadComments({data, guitarId}));
+      await api.post(APIRoute.Comments, {guitarId, userName, advantage, disadvantage, comment, rating});
+      dispatch(fetchCommentsAction(guitarId));
     } catch (error) {
       errorHandle(error);
     }
