@@ -40,7 +40,7 @@ function MainPage({urlPage}: MainPageProps): JSX.Element {
 
   return (
     <div className="wrapper">
-      <Header />
+      <Header currentCatalog />
       <main className="page-content">
         <div className="container">
           <h1 className="page-content__title title title--bigger">Каталог гитар</h1>

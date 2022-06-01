@@ -48,23 +48,68 @@ function ModalFeedback({productName, productId}: ModalFeedbackProps): JSX.Elemen
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState(0);
 
+  const [invalidName, setInvalidName] = useState(false);
+  const [invalidRating, setInvalidRating] = useState(false);
+  const [invalidAdvantage, setInvalidAdvantage] = useState(false);
+  const [invalidDisadvantage, setInvalidDisadvantage] = useState(false);
+  const [invalidComment, setInvalidComment] = useState(false);
+
+
   const onSubmit = (commentData: CommentData) => {
     dispatch(sendComment(commentData));
+  };
+
+  const handleChangeUserName = (evt:ChangeEvent<HTMLInputElement>) => {
+    setUserName(evt.target.value);
+    setInvalidName(false);
+  };
+
+  const handleChangeRating = (evt:ChangeEvent<HTMLInputElement>) => {
+    setRating(parseInt(evt.target.value, 10));
+    setInvalidRating(false);
+  };
+
+  const handleChangeAdvantage = (evt:ChangeEvent<HTMLInputElement>) => {
+    setAdvantage(evt.target.value);
+    setInvalidAdvantage(false);
+  };
+
+  const handleChangeDisadvantage = (evt:ChangeEvent<HTMLInputElement>) => {
+    setDisadvantage(evt.target.value);
+    setInvalidDisadvantage(false);
+  };
+
+  const handleChangeComment = (evt:ChangeEvent<HTMLTextAreaElement>) => {
+    setComment(evt.target.value);
+    setInvalidComment(false);
   };
 
   const formSubmitHandle = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
-    onSubmit({
-      guitarId: productId,
-      userName: userName,
-      advantage: advantage,
-      disadvantage: disadvantage,
-      comment: comment,
-      rating: rating,
-    });
-    dispatch(closeModal());
-    dispatch(openModalSuccess());
+    if (userName.length === 0) {setInvalidName(true);}
+
+    if (rating === 0) {setInvalidRating(true);}
+
+    if (advantage.length === 0) {setInvalidAdvantage(true);}
+
+    if (disadvantage.length === 0) {setInvalidDisadvantage(true);}
+
+    if (comment.length === 0) {setInvalidComment(true);}
+
+    if (userName.length !== 0 && rating !== 0 && advantage.length !== 0 && disadvantage.length !== 0 && comment.length !== 0) {
+      onSubmit({
+        guitarId: productId,
+        userName: userName,
+        advantage: advantage,
+        disadvantage: disadvantage,
+        comment: comment,
+        rating: rating,
+      });
+
+      dispatch(closeModal());
+      dispatch(openModalSuccess());
+    }
   };
 
   const handleKeyDown = (evt: { key: string; }) => {
@@ -95,10 +140,10 @@ function ModalFeedback({productName, productId}: ModalFeedbackProps): JSX.Elemen
                     <input className="form-review__input form-review__input--name"
                       data-testid="userName"
                       value={userName}
-                      onChange={(evt:ChangeEvent<HTMLInputElement>) => setUserName(evt.target.value)}
+                      onChange={handleChangeUserName}
                       id="user-name" type="text" autoComplete="off" autoFocus
                     />
-                    <p className="form-review__warning">{(userName.length === 0) ? 'Заполните поле' : '.'}</p>
+                    <p className="form-review__warning">{invalidName ? 'Заполните поле' : '.'}</p>
                   </div>
                   <div><span className="form-review__label form-review__label--required">Ваша Оценка</span>
                     <div className="rate rate--reverse">
@@ -110,12 +155,12 @@ function ModalFeedback({productName, productId}: ModalFeedbackProps): JSX.Elemen
                             id={String(star.id)}
                             type='radio'
                             checked={rating === star.id}
-                            onChange={(evt: ChangeEvent<HTMLInputElement>) => setRating(parseInt(evt.target.value, 10))}
+                            onChange={handleChangeRating}
                           />
                           <label htmlFor={String(star.id)} className='rate__label' title={star.title}></label>
                         </Fragment>
                       ))}
-                      <p className="rate__message"> {(rating === 0) ? 'Поставьте оценку' : '.'}</p>
+                      <p className="rate__message">{invalidRating ? 'Поставьте оценку' : '.'}</p>
                     </div>
                   </div>
                 </div>
@@ -124,29 +169,27 @@ function ModalFeedback({productName, productId}: ModalFeedbackProps): JSX.Elemen
                   type="text" autoComplete="off"
                   data-testid="advantage"
                   value={advantage}
-                  onChange={(evt:ChangeEvent<HTMLInputElement>) => setAdvantage(evt.target.value)}
+                  onChange={handleChangeAdvantage}
                 />
-                <p className="form-review__warning">{(advantage.length === 0) ? 'Заполните поле' : '.'}</p>
+                <p className="form-review__warning">{invalidAdvantage ? 'Заполните поле' : '.'}</p>
                 <label className="form-review__label form-review__label--required" htmlFor="disadv">Недостатки</label>
                 <input className="form-review__input" id="disadv"
                   type="text" autoComplete="off"
                   data-testid="disadv"
                   value={disadvantage}
-                  onChange={(evt:ChangeEvent<HTMLInputElement>) => setDisadvantage(evt.target.value)}
+                  onChange={handleChangeDisadvantage}
                 />
-                <p className="form-review__warning">{(disadvantage.length === 0) ? 'Заполните поле' : '.'}</p>
+                <p className="form-review__warning">{invalidDisadvantage ? 'Заполните поле' : '.'}</p>
                 <label className="form-review__label form-review__label--required" htmlFor="comment">Комментарий</label>
                 <textarea className="form-review__input form-review__input--textarea"
                   id="comment" rows={10} autoComplete="off"
                   data-testid="comment"
                   value={comment}
-                  onChange={(evt:ChangeEvent<HTMLTextAreaElement>) => setComment(evt.target.value)}
+                  onChange={handleChangeComment }
                 >
                 </textarea>
-                <p className="form-review__warning">{(comment.length === 0) ? 'Заполните поле' : '.'}</p>
-                <button className="button button--medium-20 form-review__button" type="submit"
-                  disabled={userName.length === 0 || rating === 0 || advantage.length === 0 || disadvantage.length === 0 || comment.length === 0}
-                >
+                <p className="form-review__warning">{invalidComment ? 'Заполните поле' : '.'}</p>
+                <button className="button button--medium-20 form-review__button" type="submit">
                 Отправить отзыв
                 </button>
               </form>

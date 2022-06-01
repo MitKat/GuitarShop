@@ -1,6 +1,10 @@
 import React from 'react';
 
-function Header(): JSX.Element {
+type HeaderProps = {
+  currentCatalog?: boolean;
+};
+
+function Header({currentCatalog}: HeaderProps): JSX.Element {
   return (
     <header className="header" id='header'>
       <div className="container header__wrapper">
@@ -9,7 +13,8 @@ function Header(): JSX.Element {
         </a>
         <nav className="main-nav">
           <ul className="main-nav__list">
-            <li><a className="link main-nav__link link--current" href="/">Каталог</a>
+            <li>
+              <a className={currentCatalog ? 'link main-nav__link link--current' : 'link main-nav__link'} href="/">Каталог</a>
             </li>
             <li><a className="link main-nav__link" href="/">Где купить?</a>
             </li>

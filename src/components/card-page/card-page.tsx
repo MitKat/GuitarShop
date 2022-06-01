@@ -29,7 +29,6 @@ function CardPage(): JSX.Element {
   const isVisible = useAppSelector(({MAIN}) => MAIN.isVisible);
   const isSuccess = useAppSelector(({MAIN}) => MAIN.isSuccess);
 
-
   const [isHiddenCharacteristic, setIsHiddenCharacteristic] = useState(false);
   const [isHiddenDescription, setIsHiddenDescription] = useState(true);
 
@@ -115,7 +114,7 @@ function CardPage(): JSX.Element {
               <a className="button button--red button--big product-container__button" href=" ">Добавить в корзину</a>
             </div>
           </div>
-          {comments[product.id]?.length && <Comments comments={comments[product.id]} />}
+          <Comments comments={comments[product.id]} />
         </div>
       </main>
       <Footer />

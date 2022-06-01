@@ -18,7 +18,7 @@ describe('Component: CardPage', () => {
       catalogCards: mockTestCards,
       product: mockTestCard,
       isDataLoaded: true,
-      comments:  mockTestComments,
+      comments:  {1: mockTestComments},
     },
     [NameSpace.Main]: {
       isVisible: false,

@@ -21,6 +21,7 @@ function Comments({comments}: CommentsProps): JSX.Element {
     if (!comments) {
       return [];
     }
+
     const commentsSort = [...comments].sort((commentA, commentB) =>
       (Number(new Date(commentB.createAt)) - Number(new Date(commentA.createAt))),
     );
@@ -72,7 +73,7 @@ function Comments({comments}: CommentsProps): JSX.Element {
           </div>
         ))
       }
-      <a href='#header' className="button button--up button--red-border button--big reviews__up-button">Наверх</a>
+      <a href='#header' className="button button--up button--red-border button--big reviews__up-button" style={{zIndex: 1}}>Наверх</a>
       {isShowMoreButtonVisible && <button className="button button--medium reviews__more-button" onClick={handleShowMoreCLick}>Показать еще отзывы</button>}
     </section>
   );

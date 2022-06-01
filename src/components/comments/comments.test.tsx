@@ -37,7 +37,7 @@ describe('Component: Comments', () => {
       </Provider>,
     );
 
-    expect(screen.getByText(`${mockTestComments[1].comment}`)).toBeInTheDocument();
+    expect(screen.getByText(`${mockTestComments[0].comment}`)).toBeInTheDocument();
 
   });
 });
