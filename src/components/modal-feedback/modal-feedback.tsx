@@ -88,13 +88,9 @@ function ModalFeedback({productName, productId}: ModalFeedbackProps): JSX.Elemen
     evt.preventDefault();
 
     if (userName.length === 0) {setInvalidName(true);}
-
     if (rating === 0) {setInvalidRating(true);}
-
     if (advantage.length === 0) {setInvalidAdvantage(true);}
-
     if (disadvantage.length === 0) {setInvalidDisadvantage(true);}
-
     if (comment.length === 0) {setInvalidComment(true);}
 
     if (userName.length !== 0 && rating !== 0 && advantage.length !== 0 && disadvantage.length !== 0 && comment.length !== 0) {
