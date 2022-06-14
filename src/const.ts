@@ -47,3 +47,13 @@ export const TypeGuitarTranslation = new Map([
 ]);
 
 export const NAME_KEY_ESCAPE = 'Escape';
+
+export enum TypeSort {
+  Price = 'price',
+  Rating = 'rating',
+}
+
+export enum TypeOrder {
+  Desc = 'desc',
+  Asc = 'asc',
+}

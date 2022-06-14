@@ -7,7 +7,7 @@ describe('Component: CatalogSort', () => {
   it('should render correctly', () => {
     render(
       <BrowserRouter>
-        <CatalogSort />
+        <CatalogSort typeSort='' order='' setSearchParams={() => undefined} />
       </BrowserRouter>);
 
     expect(screen.getByText(/Сортировать/i)).toBeInTheDocument();

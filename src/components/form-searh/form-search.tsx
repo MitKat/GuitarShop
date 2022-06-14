@@ -90,11 +90,11 @@ function FormSearch(): JSX.Element {
         <label className="visually-hidden" htmlFor="search">Поиск</label>
       </form>
       <ul className={isListOpen ? 'form-search__select-list list-opened' : 'form-search__select-list hidden'}>
-        {guitarList.map((guitar) =>
+        {guitarList.map((guitar, index) =>
           (
             <li className="form-search__select-item"
               key={guitar.id}
-              tabIndex={0}
+              tabIndex={index}
               onClick={handleClickSearch(guitar.id)}
             >
               {guitar.name}

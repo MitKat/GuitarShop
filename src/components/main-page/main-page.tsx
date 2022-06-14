@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { CARDS_PER_PAGE } from '../../const';
+import { useEffect, useMemo, useState } from 'react';
+import { useParams, useSearchParams } from 'react-router-dom';
+import { CARDS_PER_PAGE, TypeOrder, TypeSort } from '../../const';
 import { useAppSelector } from '../../hooks/main';
 import Breadcrumbs from '../breadcrumbs/breadcrumbs';
 import CatalogCards from '../catalog-cards/catalog-cards';
@@ -18,25 +18,63 @@ type MainPageProps = {
 function MainPage({urlPage}: MainPageProps): JSX.Element {
   const {catalogCards} = useAppSelector(({DATA}) => DATA);
   const {isDataLoaded} = useAppSelector(({DATA}) => DATA);
-
   const {pageNumber} = useParams();
 
-  const countPage = Math.ceil(catalogCards.length/CARDS_PER_PAGE);
-  const [cards, setCards] = useState(catalogCards.slice(0, CARDS_PER_PAGE));
+  const [searchParams, setSearchParams] = useSearchParams();
+  const typeSort = searchParams.get('_sort');
+  const order = searchParams.get('_order');
+
+  const catalogSort = useMemo(() => {
+
+    let sort = catalogCards;
+
+    if (!typeSort) {
+      return sort;
+    }
+
+    switch (order) {
+      case TypeOrder.Asc:
+        switch (typeSort) {
+          case TypeSort.Price:
+            sort = [...catalogCards].sort((offerA, offerB) => (offerA.price - offerB.price));
+            break;
+          case TypeSort.Rating:
+            sort = [...catalogCards].sort((offerA, offerB) => (offerA.rating - offerB.rating));
+            break;
+        }
+        break;
+      case TypeOrder.Desc:
+        switch (typeSort) {
+          case TypeSort.Price:
+            sort = [...catalogCards].sort((offerA, offerB) => (offerB.price - offerA.price));
+            break;
+          case TypeSort.Rating:
+            sort = [...catalogCards].sort((offerA, offerB) => (offerB.rating - offerA.rating));
+            break;
+        }
+        break;
+    }
+
+    return sort;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [typeSort, order]);
+
+
+  const countPage = Math.ceil(catalogSort.length/CARDS_PER_PAGE);
+  const [cards, setCards] = useState(catalogSort.slice(0, CARDS_PER_PAGE));
 
   useEffect(() => {
     const lastIndex = Number(pageNumber)*CARDS_PER_PAGE;
     const firstIndex = lastIndex - CARDS_PER_PAGE;
 
     if (urlPage === 'main') {
-      setCards(catalogCards.slice(0, CARDS_PER_PAGE));
+      setCards(catalogSort.slice(0, CARDS_PER_PAGE));
     }
     if (urlPage === 'catalog') {
-      setCards(catalogCards.slice(firstIndex, lastIndex));
+      setCards(catalogSort.slice(firstIndex, lastIndex));
     }
 
-  }, [catalogCards, pageNumber, urlPage]);
-
+  }, [catalogSort, pageNumber, urlPage]);
 
   return (
     <div className="wrapper">
@@ -47,7 +85,7 @@ function MainPage({urlPage}: MainPageProps): JSX.Element {
           <Breadcrumbs />
           <div className="catalog">
             <CatalogFilter />
-            <CatalogSort />
+            <CatalogSort typeSort={typeSort} order={order} setSearchParams={setSearchParams}/>
             {
               isDataLoaded ?
                 <>
