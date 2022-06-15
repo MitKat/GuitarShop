@@ -24,10 +24,8 @@ function MainPage({urlPage}: MainPageProps): JSX.Element {
   const typeSort = searchParams.get('_sort');
   const order = searchParams.get('_order');
 
-  const catalogSort = useMemo(() => {
-
+  const guitarCatalog = useMemo(() => {
     let sort = catalogCards;
-
     if (!typeSort) {
       return sort;
     }
@@ -56,36 +54,37 @@ function MainPage({urlPage}: MainPageProps): JSX.Element {
     }
 
     return sort;
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [typeSort, order]);
+  }, [catalogCards, typeSort, order]);
 
 
-  const countPage = Math.ceil(catalogSort.length/CARDS_PER_PAGE);
-  const [cards, setCards] = useState(catalogSort.slice(0, CARDS_PER_PAGE));
+  const countPage = Math.ceil(guitarCatalog.length/CARDS_PER_PAGE);
+  const [cards, setCards] = useState(guitarCatalog.slice(0, CARDS_PER_PAGE));
 
   useEffect(() => {
     const lastIndex = Number(pageNumber)*CARDS_PER_PAGE;
     const firstIndex = lastIndex - CARDS_PER_PAGE;
 
     if (urlPage === 'main') {
-      setCards(catalogSort.slice(0, CARDS_PER_PAGE));
+      setCards(guitarCatalog.slice(0, CARDS_PER_PAGE));
     }
     if (urlPage === 'catalog') {
-      setCards(catalogSort.slice(firstIndex, lastIndex));
+      setCards(guitarCatalog.slice(firstIndex, lastIndex));
     }
 
-  }, [catalogSort, pageNumber, urlPage]);
+  }, [guitarCatalog, pageNumber, urlPage]);
 
   return (
     <div className="wrapper">
-      <Header currentCatalog />
+      <Header isCatalog />
       <main className="page-content">
         <div className="container">
           <h1 className="page-content__title title title--bigger">Каталог гитар</h1>
           <Breadcrumbs />
           <div className="catalog">
-            <CatalogFilter />
-            <CatalogSort typeSort={typeSort} order={order} setSearchParams={setSearchParams}/>
+            <CatalogFilter guitarList={guitarCatalog}/>
+            <CatalogSort
+              typeSort={typeSort} order={order} setSearchParams={setSearchParams}
+            />
             {
               isDataLoaded ?
                 <>

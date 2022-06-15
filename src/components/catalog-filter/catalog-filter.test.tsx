@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
+import { mockTestCards } from '../mock/mock';
 import CatalogFilter from './catalog-filter';
 
 
@@ -7,7 +8,7 @@ describe('Component: CatalogFilter', () => {
   it('should render correctly', () => {
     render(
       <BrowserRouter>
-        <CatalogFilter />
+        <CatalogFilter guitarList={mockTestCards}/>
       </BrowserRouter>);
 
     expect(screen.getByText(/Фильтр/i)).toBeInTheDocument();

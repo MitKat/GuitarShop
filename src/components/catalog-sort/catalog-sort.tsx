@@ -1,21 +1,16 @@
 import React from 'react';
 import { URLSearchParamsInit } from 'react-router-dom';
-
 import { TypeOrder, TypeSort } from '../../const';
 
 type CatalogSortProps = {
   typeSort: string | null;
   order: string | null;
   setSearchParams: (nextInit: URLSearchParamsInit,
-    navigateOptions?: { replace?: boolean | undefined; state?: any; } |
+    navigateOptions?: { replace?: boolean | undefined;} |
     undefined) => void;
 };
 
 function CatalogSort({typeSort, order, setSearchParams}: CatalogSortProps): JSX.Element {
-
-
-  // eslint-disable-next-line no-console
-  console.log(typeSort, order);
 
   const params = {_sort: '', _order: TypeOrder.Asc};
 
@@ -43,17 +38,15 @@ function CatalogSort({typeSort, order, setSearchParams}: CatalogSortProps): JSX.
     <div className="catalog-sort">
       <h2 className="catalog-sort__title">Сортировать:</h2>
       <div className="catalog-sort__type">
-        <button className={(typeSort === TypeSort.Price) ?
-          'catalog-sort__type-button catalog-sort__type-button--active' :
-          'catalog-sort__type-button'}
+        <button className={`catalog-sort__type-button
+          ${(typeSort === TypeSort.Price) ? 'catalog-sort__type-button--active' : ''}`}
         aria-label="по цене"
         onClick={handleChangeSort(TypeSort.Price)}
         >
            по цене
         </button>
-        <button className={(typeSort === TypeSort.Rating) ?
-          'catalog-sort__type-button catalog-sort__type-button--active' :
-          'catalog-sort__type-button'}
+        <button className={`catalog-sort__type-button
+          ${(typeSort === TypeSort.Rating) ? 'catalog-sort__type-button--active' : ''}`}
         aria-label="по популярности"
         onClick={handleChangeSort(TypeSort.Rating)}
         >
@@ -62,17 +55,15 @@ function CatalogSort({typeSort, order, setSearchParams}: CatalogSortProps): JSX.
       </div>
       <div className="catalog-sort__order">
         <button
-          className={(order === TypeOrder.Asc) ?
-            'catalog-sort__order-button catalog-sort__order-button--up catalog-sort__order-button--active' :
-            'catalog-sort__order-button catalog-sort__order-button--up'}
+          className={`catalog-sort__order-button catalog-sort__order-button--up
+            ${(order === TypeOrder.Asc ) ? 'catalog-sort__order-button--active' : ''}`}
           aria-label="По возрастанию"
           onClick={handleChangeOrder(TypeOrder.Asc)}
         >
         </button>
         <button
-          className={(order === TypeOrder.Desc) ?
-            'catalog-sort__order-button catalog-sort__order-button--down catalog-sort__order-button--active' :
-            'catalog-sort__order-button catalog-sort__order-button--down'}
+          className={`catalog-sort__order-button catalog-sort__order-button--down
+            ${(order === TypeOrder.Desc) ? 'catalog-sort__order-button--active' : ''}`}
           aria-label="По убыванию"
           onClick={handleChangeOrder(TypeOrder.Desc)}
         >

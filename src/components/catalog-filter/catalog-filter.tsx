@@ -1,6 +1,16 @@
 import React from 'react';
+import { Card } from '../../types/card';
 
-function CatalogFilter(): JSX.Element {
+type CatalogFilterProps = {
+  guitarList: Card[];
+}
+
+function CatalogFilter({guitarList}: CatalogFilterProps): JSX.Element {
+
+  const sortingPriceGuitar = [...guitarList].sort((guitarA, guitarB) => (guitarA.price - guitarB.price));
+  const minPrice = sortingPriceGuitar[0]?.price;
+  const maxPrice = sortingPriceGuitar[sortingPriceGuitar.length-1]?.price;
+
   return (
     <form className="catalog-filter">
       <h2 className="title title--bigger catalog-filter__title">Фильтр</h2>
@@ -9,11 +19,11 @@ function CatalogFilter(): JSX.Element {
         <div className="catalog-filter__price-range">
           <div className="form-input">
             <label className="visually-hidden">Минимальная цена</label>
-            <input type="number" placeholder="1 000" id="priceMin" name="от" />
+            <input type="number" placeholder={`${minPrice}`} id="priceMin" name="от" />
           </div>
           <div className="form-input">
             <label className="visually-hidden">Максимальная цена</label>
-            <input type="number" placeholder="30 000" id="priceMax" name="до" />
+            <input type="number" placeholder={`${maxPrice}`} id="priceMax" name="до" />
           </div>
         </div>
       </fieldset>

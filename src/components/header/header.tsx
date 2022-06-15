@@ -2,10 +2,10 @@ import React from 'react';
 import FormSearch from '../form-searh/form-search';
 
 type HeaderProps = {
-  currentCatalog?: boolean;
+  isCatalog?: boolean;
 };
 
-function Header({currentCatalog}: HeaderProps): JSX.Element {
+function Header({isCatalog}: HeaderProps): JSX.Element {
   return (
     <header className="header" id='header'>
       <div className="container header__wrapper">
@@ -15,7 +15,7 @@ function Header({currentCatalog}: HeaderProps): JSX.Element {
         <nav className="main-nav">
           <ul className="main-nav__list">
             <li>
-              <a className={currentCatalog ? 'link main-nav__link link--current' : 'link main-nav__link'} href="/">Каталог</a>
+              <a className={isCatalog ? 'link main-nav__link link--current' : 'link main-nav__link'} href="/">Каталог</a>
             </li>
             <li><a className="link main-nav__link" href="/">Где купить?</a>
             </li>
