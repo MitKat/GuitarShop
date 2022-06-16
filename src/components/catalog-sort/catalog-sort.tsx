@@ -6,7 +6,7 @@ type CatalogSortProps = {
   typeSort: string | null;
   order: string | null;
   setSearchParams: (nextInit: URLSearchParamsInit,
-    navigateOptions?: { replace?: boolean | undefined;} |
+    navigateOptions?: { replace?: boolean | undefined; state: any} |
     undefined) => void;
 };
 

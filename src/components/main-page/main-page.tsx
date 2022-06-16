@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
+// import { useDispatch } from 'react-redux';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { CARDS_PER_PAGE, TypeOrder, TypeSort } from '../../const';
 import { useAppSelector } from '../../hooks/main';
+// import { filteredPriceMax} from '../../store/data-process/data-process';
 import Breadcrumbs from '../breadcrumbs/breadcrumbs';
 import CatalogCards from '../catalog-cards/catalog-cards';
 import CatalogFilter from '../catalog-filter/catalog-filter';
@@ -23,7 +25,6 @@ function MainPage({urlPage}: MainPageProps): JSX.Element {
   const [searchParams, setSearchParams] = useSearchParams();
   const typeSort = searchParams.get('_sort');
   const order = searchParams.get('_order');
-
   const guitarCatalog = useMemo(() => {
     let sort = catalogCards;
     if (!typeSort) {
@@ -34,20 +35,20 @@ function MainPage({urlPage}: MainPageProps): JSX.Element {
       case TypeOrder.Asc:
         switch (typeSort) {
           case TypeSort.Price:
-            sort = [...catalogCards].sort((offerA, offerB) => (offerA.price - offerB.price));
+            sort = [...catalogCards].sort((guitarA, guitarB) => (guitarA.price - guitarB.price));
             break;
           case TypeSort.Rating:
-            sort = [...catalogCards].sort((offerA, offerB) => (offerA.rating - offerB.rating));
+            sort = [...catalogCards].sort((guitarA, guitarB) => (guitarA.rating - guitarB.rating));
             break;
         }
         break;
       case TypeOrder.Desc:
         switch (typeSort) {
           case TypeSort.Price:
-            sort = [...catalogCards].sort((offerA, offerB) => (offerB.price - offerA.price));
+            sort = [...catalogCards].sort((guitarA, guitarB) => (guitarB.price - guitarA.price));
             break;
           case TypeSort.Rating:
-            sort = [...catalogCards].sort((offerA, offerB) => (offerB.rating - offerA.rating));
+            sort = [...catalogCards].sort((guitarA, guitarB) => (guitarB.rating - guitarA.rating));
             break;
         }
         break;
@@ -55,7 +56,6 @@ function MainPage({urlPage}: MainPageProps): JSX.Element {
 
     return sort;
   }, [catalogCards, typeSort, order]);
-
 
   const countPage = Math.ceil(guitarCatalog.length/CARDS_PER_PAGE);
   const [cards, setCards] = useState(guitarCatalog.slice(0, CARDS_PER_PAGE));

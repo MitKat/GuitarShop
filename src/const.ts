@@ -46,6 +46,12 @@ export const TypeGuitarTranslation = new Map([
   ['ukulele', 'Укулеле'],
 ]);
 
+export const TypeGuitar = {
+  acoustic: [6, 7, 12],
+  electric: [4, 6, 7],
+  ukulele: [4],
+};
+
 export const NAME_KEY_ESCAPE = 'Escape';
 
 export enum TypeSort {
