@@ -1,9 +1,7 @@
 import React, { ChangeEvent, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useLocation, useSearchParams } from 'react-router-dom';
-import  {URLSearchParams}  from 'url';
-import { AppRoute, TypeGuitar, TypeGuitarTranslation } from '../../const';
-// import { useAppSelector } from '../../hooks/main';
+import { TypeGuitar, TypeGuitarTranslation } from '../../const';
 import { filteredPriceMax, filteredPriceMin } from '../../store/data-process/data-process';
 import { Card } from '../../types/card';
 import { getMaxPrice, getMinPrice } from '../../utils';
@@ -12,21 +10,22 @@ type CatalogFilterProps = {
   guitarList: Card[];
 }
 
+
 function CatalogFilter({guitarList}: CatalogFilterProps): JSX.Element {
   const [searchParams, setSearchParams] = useSearchParams();
+
+  // eslint-disable-next-line no-console
+  console.log(searchParams);
+
   const dispatch = useDispatch();
-  // const location = useLocation();
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
 
   const minPrice = getMinPrice(guitarList);
   const maxPrice = getMaxPrice(guitarList);
 
-  const params = {priceStart: '', priceEnd: '', type: ''};
   const minPriceRef = useRef<HTMLInputElement | null>(null);
   const maxPriceRef = useRef<HTMLInputElement | null>(null);
-
-  const priceStart = searchParams.get('priceStart');
-  const priceEnd = searchParams.get('priceEnd');
-  const type = searchParams.getAll('type');
 
   const handleFilterPriceStart = () => {
     if(minPriceRef.current !== null) {
@@ -34,10 +33,9 @@ function CatalogFilter({guitarList}: CatalogFilterProps): JSX.Element {
       if (Number(minPriceRef.current.value) <= minPrice) {
         minPriceRef.current.value = String(minPrice);
       }
-      params.priceStart = minPriceRef.current.value;
-      params.priceEnd = String(priceEnd);
-      params.type = String(type);
+      params.set('priceStart', minPriceRef.current.value);
       setSearchParams(params);
+
       dispatch(filteredPriceMin(Number(minPriceRef.current.value)));
     }
   };
@@ -47,18 +45,27 @@ function CatalogFilter({guitarList}: CatalogFilterProps): JSX.Element {
       if(Number(maxPriceRef.current.value) >= maxPrice) {
         maxPriceRef.current.value = String(maxPrice);
       }
-      params.priceEnd = maxPriceRef.current.value;
-      params.priceStart = String(priceStart);
+      params.set('priceEnd', maxPriceRef.current.value);
       setSearchParams(params);
       dispatch(filteredPriceMax(Number(maxPriceRef.current.value)));
     }
   };
-  const typeOne = new URLSearchParams(AppRoute.Main);
 
   const handleChangeTypeGuitar = (evt: ChangeEvent<HTMLInputElement>) => {
-    // params.type = evt.target.value;
-    typeOne.set('type', evt.target.value);
-    // setSearchParams(typeOne);
+
+    const typesGuitar = Array.from(params.values());
+    const typeParams = typesGuitar.find((item) => item === evt.target.value);
+
+    if (typeParams) {
+      params.delete('type');
+      const filteredTypesGuitar = typesGuitar.filter((item) => item !== typeParams);
+      filteredTypesGuitar.map((item) => params.append('type', item));
+      // setSearchParams(params);
+    } else {
+      params.append('type', evt.target.value);
+    }
+    setSearchParams(params);
+
   };
 
   return (
@@ -91,7 +98,7 @@ function CatalogFilter({guitarList}: CatalogFilterProps): JSX.Element {
       <fieldset className="catalog-filter__block">
         <legend className="catalog-filter__block-title">Количество струн</legend>
         <div className="form-checkbox catalog-filter__block-item">
-          <input className="visually-hidden" type="checkbox" id="4-strings" name="4-strings"/>
+          <input className="visually-hidden" type="checkbox" id="4-strings" name="4-strings"  />
           <label htmlFor="4-strings">4</label>
         </div>
         <div className="form-checkbox catalog-filter__block-item">
