@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import { mockTestCards } from '../mock/mock';
 import CatalogFilter from './catalog-filter';
 
 
@@ -8,7 +7,7 @@ describe('Component: CatalogFilter', () => {
   it('should render correctly', () => {
     render(
       <BrowserRouter>
-        <CatalogFilter guitarList={mockTestCards}/>
+        <CatalogFilter  minPrice={0} maxPrice={4} setSearchParams={() => undefined}/>
       </BrowserRouter>);
 
     expect(screen.getByText(/Фильтр/i)).toBeInTheDocument();

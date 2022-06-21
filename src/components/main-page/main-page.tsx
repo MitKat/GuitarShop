@@ -1,9 +1,10 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 // import { useDispatch } from 'react-redux';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { CARDS_PER_PAGE, TypeOrder, TypeSort } from '../../const';
 import { useAppSelector } from '../../hooks/main';
-// import { filteredPriceMax} from '../../store/data-process/data-process';
+import { Card } from '../../types/card';
+import { getMaxPrice, getMinPrice } from '../../utils';
 import Breadcrumbs from '../breadcrumbs/breadcrumbs';
 import CatalogCards from '../catalog-cards/catalog-cards';
 import CatalogFilter from '../catalog-filter/catalog-filter';
@@ -23,13 +24,59 @@ function MainPage({urlPage}: MainPageProps): JSX.Element {
   const {pageNumber} = useParams();
 
   const [searchParams, setSearchParams] = useSearchParams();
+
+  //filter
+  const minPrice = getMinPrice(catalogCards);
+  const maxPrice = getMaxPrice(catalogCards);
+  const priceStart = searchParams.get('priceStart');
+  const priceEnd = searchParams.get('priceEnd');
+  const typesGuitar = searchParams.getAll('type');
+
+
+  let listToRender: Card[] = catalogCards;
+  listToRender = useMemo(() => {
+    const listOfPrice = listToRender;
+    if (priceStart) {
+      listOfPrice.filter((item) => item.price >= Number(priceStart));
+    }
+    if (priceEnd) {
+      listOfPrice.filter((item) => item.price <= Number(priceEnd));
+    }
+    return listOfPrice;
+
+  }, [listToRender, priceEnd, priceStart]);
+
+  listToRender = useMemo(() => {let listOfTypes = listToRender;
+    let filteredTypesAcoustic: Card[] = [];
+    let filteredTypesUkulele: Card[] = [];
+    let filteredTypesElectric: Card[] = [];
+
+    if (typesGuitar.length) {
+
+      if (typesGuitar.some((item) => item === 'acoustic')) { filteredTypesAcoustic = listOfTypes.filter((item) => item.type === 'acoustic');}
+      if (typesGuitar.some((item) => item === 'ukulele')) {filteredTypesUkulele = listOfTypes.filter((item) => item.type === 'ukulele');}
+      if (typesGuitar.some((item) => item === 'electric')) {filteredTypesElectric = listOfTypes.filter((item) => item.type === 'electric');}
+
+    }
+
+    return listOfTypes = filteredTypesAcoustic.concat( filteredTypesUkulele, filteredTypesElectric);
+  }, [listToRender, typesGuitar]);
+
+  // eslint-disable-next-line no-console
+  console.log(listToRender);
+
+  //sorting
   const typeSort = searchParams.get('_sort');
   const order = searchParams.get('_order');
-  const guitarCatalog = useMemo(() => {
+  useEffect(() => {
     let sort = catalogCards;
-    if (!typeSort) {
-      return sort;
-    }
+
+    // if (guitarList.length) {
+    //   sort = guitarList;
+    // }
+    // if (!typeSort) {
+    //   return sort;
+    // }
 
     switch (order) {
       case TypeOrder.Asc:
@@ -54,24 +101,23 @@ function MainPage({urlPage}: MainPageProps): JSX.Element {
         break;
     }
 
-    return sort;
   }, [catalogCards, typeSort, order]);
 
-  const countPage = Math.ceil(guitarCatalog.length/CARDS_PER_PAGE);
-  const [cards, setCards] = useState(guitarCatalog.slice(0, CARDS_PER_PAGE));
+  const countPage = Math.ceil(listToRender.length/CARDS_PER_PAGE);
+  const [cards, setCards] = useState(listToRender.slice(0, CARDS_PER_PAGE));
 
   useEffect(() => {
     const lastIndex = Number(pageNumber)*CARDS_PER_PAGE;
     const firstIndex = lastIndex - CARDS_PER_PAGE;
 
     if (urlPage === 'main') {
-      setCards(guitarCatalog.slice(0, CARDS_PER_PAGE));
+      setCards(listToRender.slice(0, CARDS_PER_PAGE));
     }
     if (urlPage === 'catalog') {
-      setCards(guitarCatalog.slice(firstIndex, lastIndex));
+      setCards(listToRender.slice(firstIndex, lastIndex));
     }
 
-  }, [guitarCatalog, pageNumber, urlPage]);
+  }, [listToRender, pageNumber, urlPage]);
 
   return (
     <div className="wrapper">
@@ -81,7 +127,7 @@ function MainPage({urlPage}: MainPageProps): JSX.Element {
           <h1 className="page-content__title title title--bigger">Каталог гитар</h1>
           <Breadcrumbs />
           <div className="catalog">
-            <CatalogFilter guitarList={guitarCatalog}/>
+            <CatalogFilter minPrice={minPrice} maxPrice={maxPrice} setSearchParams={setSearchParams}/>
             <CatalogSort
               typeSort={typeSort} order={order} setSearchParams={setSearchParams}
             />

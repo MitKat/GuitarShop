@@ -47,10 +47,12 @@ export const TypeGuitarTranslation = new Map([
 ]);
 
 export const TypeGuitar = {
-  acoustic: [6, 7, 12],
-  electric: [4, 6, 7],
-  ukulele: [4],
+  acoustic: 'acoustic',
+  electric: 'electric',
+  ukulele: 'ukulele',
 };
+
+// export const countOfSTrings = [4, 6, 7, 12];
 
 export const NAME_KEY_ESCAPE = 'Escape';
 
