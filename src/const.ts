@@ -27,6 +27,8 @@ export enum Scroll {
 }
 
 export const CARDS_PER_PAGE = 9;
+export const NAME_KEY_ESCAPE = 'Escape';
+export const NAME_KEY_ENTER = 'Enter';
 
 export const InitialProduct = {
   id: -1,
@@ -38,6 +40,18 @@ export const InitialProduct = {
   stringCount: 0,
   rating: 0,
   price: 0,
+};
+
+export const InitialQueryParams = {
+  minPrice: 0,
+  maxPrice: 0,
+  typeAcoustic: false,
+  typeUkulele: false,
+  typeElectric: false,
+  countString4: false,
+  countString6: false,
+  countString7: false,
+  countString12: false,
 };
 
 export const TypeGuitarTranslation = new Map([
@@ -52,9 +66,13 @@ export const TypeGuitar = {
   ukulele: 'ukulele',
 };
 
-// export const countOfSTrings = [4, 6, 7, 12];
+export enum ParamsFilter {
+  PriceStart = 'price_gte',
+  PriceEnd = 'price_lte',
+  Type = 'type',
+  StringCount = 'stringCount',
+}
 
-export const NAME_KEY_ESCAPE = 'Escape';
 
 export enum TypeSort {
   Price = 'price',

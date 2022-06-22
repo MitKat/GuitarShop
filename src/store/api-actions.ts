@@ -1,11 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
 import { APIRoute } from '../const';
-import { loadCards, loadComments, loadProduct } from './data-process/data-process';
+import { loadCards, loadComments, loadFilteredCards, loadProduct } from './data-process/data-process';
 import { CommentData } from '../types/comment-data';
 import { errorHandle } from '../services/error-handle';
 import { AppDispatch, State } from '../types/state';
-
 
 export const fetchCardsAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch,
@@ -17,6 +16,22 @@ export const fetchCardsAction = createAsyncThunk<void, undefined, {
     try {
       const {data} = await api.get(`${APIRoute.Cards}`);
       dispatch(loadCards(data));
+    } catch (error) {
+      errorHandle(error);
+    }
+  },
+);
+
+export const fetchFilteredCardsAction = createAsyncThunk<void, string, {
+  dispatch: AppDispatch,
+  state: State,
+  extra: AxiosInstance
+}>(
+  'data/fetchFilter',
+  async (search, {dispatch, extra: api}) => {
+    try {
+      const {data} = await api.get(`${APIRoute.Cards}${search}`);
+      dispatch(loadFilteredCards({data}));
     } catch (error) {
       errorHandle(error);
     }

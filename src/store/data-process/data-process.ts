@@ -5,6 +5,7 @@ import { Comment } from '../../types/comment';
 
 interface InitialState {
   catalogCards: Card[];
+  catalogFilteredCards: Card[];
   product: Card;
   isDataLoaded: boolean;
   comments: {[guitarId: string]: Comment[]};
@@ -12,6 +13,7 @@ interface InitialState {
 
 const initialState: InitialState = {
   catalogCards: [],
+  catalogFilteredCards: [],
   product: InitialProduct,
   isDataLoaded: false,
   comments: {},
@@ -24,6 +26,9 @@ export const dataProcess = createSlice({
     loadCards: (state, action) => {
       state.catalogCards = action.payload;
       state.isDataLoaded = true;
+    },
+    loadFilteredCards: (state, action) => {
+      state.catalogFilteredCards = action.payload;
     },
     loadProduct: (state, action) => {
       state.product = action.payload;
@@ -45,6 +50,7 @@ export const dataProcess = createSlice({
 
 export const {
   loadCards,
+  loadFilteredCards,
   loadProduct,
   loadComments,
   filteredPriceMin,

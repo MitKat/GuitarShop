@@ -1,5 +1,6 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { NAME_KEY_ENTER } from '../../const';
 import { useAppSelector } from '../../hooks/main';
 import { Card } from '../../types/card';
 
@@ -41,7 +42,7 @@ function FormSearch(): JSX.Element {
   };
 
   const handleKeyDown = (evt: React.KeyboardEvent<HTMLLIElement>, id: number) => {
-    if (evt.key === 'Enter') {
+    if (evt.key === NAME_KEY_ENTER) {
       navigate(`/product/${id}`);
     }
   };
