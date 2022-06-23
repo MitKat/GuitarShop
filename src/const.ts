@@ -42,18 +42,6 @@ export const InitialProduct = {
   price: 0,
 };
 
-export const InitialQueryParams = {
-  minPrice: 0,
-  maxPrice: 0,
-  typeAcoustic: false,
-  typeUkulele: false,
-  typeElectric: false,
-  countString4: false,
-  countString6: false,
-  countString7: false,
-  countString12: false,
-};
-
 export const TypeGuitarTranslation = new Map([
   ['acoustic', 'Акустическая гитара'],
   ['electric', 'Электрогитара'],
@@ -72,7 +60,6 @@ export enum ParamsFilter {
   Type = 'type',
   StringCount = 'stringCount',
 }
-
 
 export enum TypeSort {
   Price = 'price',

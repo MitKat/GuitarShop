@@ -1,5 +1,5 @@
 import React from 'react';
-import { URLSearchParamsInit } from 'react-router-dom';
+import { URLSearchParamsInit, useLocation } from 'react-router-dom';
 import { TypeOrder, TypeSort } from '../../const';
 
 type CatalogSortProps = {
@@ -11,25 +11,30 @@ type CatalogSortProps = {
 };
 
 function CatalogSort({typeSort, order, setSearchParams}: CatalogSortProps): JSX.Element {
-
-  const params = {_sort: '', _order: TypeOrder.Asc};
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
 
   const handleChangeSort = (name: string) => () => {
-    params._sort = name;
+    params.set('_sort', name);
+    params.set('_order', TypeOrder.Asc);
     setSearchParams(params);
   };
 
   const handleChangeOrder = (name: string) => () => {
     if (typeSort === null) {
-      setSearchParams({ _sort: TypeSort.Price, _order: name});
+      params.set('_sort', TypeSort.Price);
+      params.set('_order', name);
+      setSearchParams(params);
     }
 
     switch (typeSort) {
       case TypeSort.Price:
-        setSearchParams({ _sort: TypeSort.Price, _order: name});
+        params.set('_order', name);
+        setSearchParams(params);
         break;
       case TypeSort.Rating:
-        setSearchParams({ _sort: TypeSort.Rating, _order: name});
+        params.set('_order', name);
+        setSearchParams(params);
         break;
     }
   };

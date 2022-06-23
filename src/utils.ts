@@ -1,4 +1,33 @@
 import { Card } from './types/card';
 
-export const getMinPrice = (guitarList?: Card[]) => guitarList?.reduce((min, guitar) => guitar.price < min ? guitar.price : min, guitarList[0]?.price);
-export const getMaxPrice = (guitarList?: Card[]) => guitarList?.reduce((max, guitar) => guitar.price > max ? guitar.price : max, guitarList[0]?.price);
+export const getMinPrice = (guitarList: Card[]) => {
+  if(guitarList.length <= 0) {
+    return 0;
+  }
+
+  let min = guitarList[0].price;
+
+  guitarList.forEach((guitar) => {
+    if (guitar.price < min) {
+      min = guitar.price;
+    }
+  });
+
+  return min;
+};
+
+export const getMaxPrice = (guitarList: Card[]) => {
+  if(guitarList.length <= 0) {
+    return 0;
+  }
+
+  let max = guitarList[0].price;
+
+  guitarList.forEach((guitar) => {
+    if (guitar.price > max) {
+      max = guitar.price;
+    }
+  });
+
+  return max;
+};

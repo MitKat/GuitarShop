@@ -4,7 +4,7 @@ import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { createAPI } from '../../services/api';
-import Header from './header';
+import FormSearch from './form-search';
 import { NameSpace } from '../../const';
 import { mockTestCard, mockTestCards, mockTestComments } from '../mock/mock';
 
@@ -30,13 +30,11 @@ describe('Component: FormSearch', () => {
     render(
       <Provider store={fakeStore}>
         <BrowserRouter>
-          <Header />
+          <FormSearch />
         </BrowserRouter>
       </Provider>);
 
-    expect(screen.getByText(/Каталог/i)).toBeInTheDocument();
-    expect(screen.getByText(/Где купить/i)).toBeInTheDocument();
-    expect(screen.getByText(/О компании/i)).toBeInTheDocument();
-    expect(screen.getByText(/Перейти в корзину/i)).toBeInTheDocument();
+    expect(screen.getByText(/Начать поиск/i)).toBeInTheDocument();
+
   });
 });

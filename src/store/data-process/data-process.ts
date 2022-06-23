@@ -39,12 +39,6 @@ export const dataProcess = createSlice({
         [action.payload.id]: action.payload.data,
       };
     },
-    filteredPriceMin: (state, action) => {
-      state.catalogCards = state.catalogCards.filter((guitar) => guitar.price >= action.payload);
-    },
-    filteredPriceMax: (state, action) => {
-      state.catalogCards = state.catalogCards.filter((guitar) => guitar.price <= action.payload);
-    },
   },
 });
 
@@ -53,6 +47,4 @@ export const {
   loadFilteredCards,
   loadProduct,
   loadComments,
-  filteredPriceMin,
-  filteredPriceMax,
 } = dataProcess.actions;

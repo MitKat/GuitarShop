@@ -31,7 +31,7 @@ export const fetchFilteredCardsAction = createAsyncThunk<void, string, {
   async (search, {dispatch, extra: api}) => {
     try {
       const {data} = await api.get(`${APIRoute.Cards}${search}`);
-      dispatch(loadFilteredCards({data}));
+      dispatch(loadFilteredCards(data));
     } catch (error) {
       errorHandle(error);
     }

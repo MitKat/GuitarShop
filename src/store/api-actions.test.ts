@@ -5,8 +5,8 @@ import { State } from '../types/state';
 import thunk from 'redux-thunk';
 import { Action, ThunkDispatch } from '@reduxjs/toolkit';
 import { APIRoute } from '../const';
-import { fetchCardsAction, fetchCommentsAction, fetchProductAction, sendComment } from './api-actions';
-import { loadCards, loadComments, loadProduct } from './data-process/data-process';
+import { fetchCardsAction, fetchCommentsAction, fetchFilteredCardsAction, fetchProductAction, sendComment } from './api-actions';
+import { loadCards, loadComments, loadFilteredCards, loadProduct } from './data-process/data-process';
 import { mockCommentData, mockTestCard, mockTestCards, mockTestComments } from '../components/mock/mock';
 
 describe('Async actions', () => {
@@ -31,6 +31,18 @@ describe('Async actions', () => {
     await store.dispatch(fetchCardsAction());
     const actions = store.getActions().map(({type}) => type);
     expect(actions).toContain(loadCards.toString());
+  });
+
+  it('should dispatch loadFilteredCards when GET /guitars?stringCount', async () => {
+    const fakeCards = mockTestCards;
+    mockAPI
+      .onGet(`${APIRoute.Cards}?stringCount=6`)
+      .reply(200, fakeCards);
+
+    const store = mockStore();
+    await store.dispatch(fetchFilteredCardsAction('?stringCount=6'));
+    const actions = store.getActions().map(({type}) => type);
+    expect(actions).toContain(loadFilteredCards.toString());
   });
 
   it('should dispatch loadProduct when GET /guitars/id', async () => {

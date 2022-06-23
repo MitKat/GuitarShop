@@ -15,9 +15,9 @@ import Rating from '../rating/rating';
 
 
 function CardPage(): JSX.Element {
-  useScrollTop();
   const dispatch = useAppDispatch();
   const {id} = useParams();
+  useScrollTop();
 
   useEffect(() => {
     dispatch(fetchProductAction(String(id)));

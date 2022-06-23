@@ -1,32 +1,39 @@
 import React, { ChangeEvent, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { URLSearchParamsInit, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { ParamsFilter, TypeGuitar, TypeGuitarTranslation } from '../../const';
-import { setMinPrice, setTypeGuitar } from '../../store/main-process/main-process';
+import { useAppSelector } from '../../hooks/main';
+import { getMaxPrice, getMinPrice } from '../../utils';
 
 type CatalogFilterProps = {
   setSearchParams: (nextInit: URLSearchParamsInit,
     navigateOptions?: { replace?: boolean | undefined; state: any} |
     undefined) => void;
-    minPrice: number;
-    maxPrice: number;
 }
 
-function CatalogFilter({setSearchParams, minPrice, maxPrice}: CatalogFilterProps): JSX.Element {
-  // const [searchParams, setSearchParams] = useSearchParams();
+function CatalogFilter({setSearchParams}: CatalogFilterProps): JSX.Element {
+  const {catalogCards} = useAppSelector(({DATA}) => DATA);
   const [isDisabled4, setIsDisabled4] = useState(false);
   const [isDisabled6, setIsDisabled6] = useState(false);
   const [isDisabled7, setIsDisabled7] = useState(false);
   const [isDisabled12, setIsDisabled12] = useState(false);
 
-  const dispatch = useDispatch();
   const location = useLocation();
   const params = new URLSearchParams(location.search);
 
+  const minPrice = getMinPrice(catalogCards);
+  const maxPrice = getMaxPrice(catalogCards);
+
+  const priceParamsStart = params.get(ParamsFilter.PriceStart);
+  const priceParamsEnd = params.get(ParamsFilter.PriceStart);
+
   const minPriceRef = useRef<HTMLInputElement | null>(null);
   const maxPriceRef = useRef<HTMLInputElement | null>(null);
+
+  const placeholderMinPrice = (priceParamsStart !== null) ? priceParamsStart : String(minPrice);
+  const placeholderMaxPrice = (priceParamsEnd !== null) ? priceParamsEnd : String(minPrice);
+
 
   const handleFilterPriceStart = () => {
     if(minPriceRef.current !== null ) {
@@ -38,7 +45,6 @@ function CatalogFilter({setSearchParams, minPrice, maxPrice}: CatalogFilterProps
         }
         params.set(ParamsFilter.PriceStart, minPriceRef.current.value);
         setSearchParams(params);
-        dispatch(setMinPrice(Number(minPriceRef.current.value)));
       } else {
         toast('Ввведите положительное число');
         minPriceRef.current.value = '';
@@ -56,7 +62,6 @@ function CatalogFilter({setSearchParams, minPrice, maxPrice}: CatalogFilterProps
         }
         params.set(ParamsFilter.PriceEnd, maxPriceRef.current.value);
         setSearchParams(params);
-        dispatch(setMinPrice(Number(maxPriceRef.current.value)));
       } else {
         toast('Ввведите положительное число');
         maxPriceRef.current.value = '';
@@ -93,7 +98,6 @@ function CatalogFilter({setSearchParams, minPrice, maxPrice}: CatalogFilterProps
     } else {
       params.append(ParamsFilter.Type, evt.target.value);
       setSearchParams(params);
-      dispatch(setTypeGuitar((evt.target.value)));
       const updatedParams = Array.from(params.getAll(ParamsFilter.Type));
       if (updatedParams.length === 0) {
         resetIsDisabledCountString();
@@ -126,7 +130,7 @@ function CatalogFilter({setSearchParams, minPrice, maxPrice}: CatalogFilterProps
     params.delete(ParamsFilter.Type);
     params.delete(ParamsFilter.PriceStart);
     params.delete(ParamsFilter.PriceEnd);
-    params.delete('countString');
+    params.delete(ParamsFilter.StringCount);
     setSearchParams(params);
   };
 
@@ -138,11 +142,11 @@ function CatalogFilter({setSearchParams, minPrice, maxPrice}: CatalogFilterProps
         <div className="catalog-filter__price-range">
           <div className="form-input">
             <label className="visually-hidden">Минимальная цена</label>
-            <input type="number" placeholder={`${minPrice}`} id="priceMin" value={`${params.get(ParamsFilter.PriceStart)}`} name="от" ref={minPriceRef} onBlur={handleFilterPriceStart}/>
+            <input type="number" placeholder={placeholderMinPrice} id="priceMin" name="от" ref={minPriceRef} onBlur={handleFilterPriceStart}/>
           </div>
           <div className="form-input">
             <label className="visually-hidden">Максимальная цена</label>
-            <input type="number" placeholder={`${maxPrice}`} id="priceMax" value={`${params.get(ParamsFilter.PriceEnd)}`} name="до" ref={maxPriceRef} onBlur={handleFilterPriceEnd}/>
+            <input type="number" placeholder={placeholderMaxPrice} id="priceMax" name="до" ref={maxPriceRef} onBlur={handleFilterPriceEnd}/>
           </div>
         </div>
       </fieldset>
