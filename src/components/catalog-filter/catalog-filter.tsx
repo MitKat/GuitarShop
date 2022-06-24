@@ -32,7 +32,7 @@ function CatalogFilter({setSearchParams}: CatalogFilterProps): JSX.Element {
   const maxPriceRef = useRef<HTMLInputElement | null>(null);
 
   const placeholderMinPrice = (priceParamsStart !== null) ? priceParamsStart : String(minPrice);
-  const placeholderMaxPrice = (priceParamsEnd !== null) ? priceParamsEnd : String(minPrice);
+  const placeholderMaxPrice = (priceParamsEnd !== null) ? priceParamsEnd : String(maxPrice);
 
 
   const handleFilterPriceStart = () => {
@@ -131,6 +131,7 @@ function CatalogFilter({setSearchParams}: CatalogFilterProps): JSX.Element {
     params.delete(ParamsFilter.PriceStart);
     params.delete(ParamsFilter.PriceEnd);
     params.delete(ParamsFilter.StringCount);
+    resetIsDisabledCountString();
     setSearchParams(params);
   };
 
