@@ -11,8 +11,9 @@ export enum APIRoute {
 }
 
 export enum NameSpace {
-  Main = 'MAIN',
+  Modal = 'MODAL',
   Data = 'DATA',
+  State = 'STATE',
 }
 
 export enum HttpCode {

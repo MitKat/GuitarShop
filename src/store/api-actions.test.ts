@@ -33,14 +33,26 @@ describe('Async actions', () => {
     expect(actions).toContain(loadCards.toString());
   });
 
-  it('should dispatch loadFilteredCards when GET /guitars?stringCount', async () => {
+  it('should dispatch loadFilteredCards when GET ?stringCount', async () => {
     const fakeCards = mockTestCards;
+    const state = {
+      filtersState: {
+        priceStart: 0,
+        priceEnd: 0,
+        typeGuitar: [],
+        stringCount: '6',
+      },
+      sortState: {
+        sort: 'price',
+        order: 'asc',
+      },
+    };
     mockAPI
       .onGet(`${APIRoute.Cards}?stringCount=6`)
       .reply(200, fakeCards);
 
     const store = mockStore();
-    await store.dispatch(fetchFilteredCardsAction('?stringCount=6'));
+    await store.dispatch(fetchFilteredCardsAction(state));
     const actions = store.getActions().map(({type}) => type);
     expect(actions).toContain(loadFilteredCards.toString());
   });

@@ -1,40 +1,30 @@
 import React from 'react';
-import { URLSearchParamsInit, useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { TypeOrder, TypeSort } from '../../const';
+import { useAppSelector } from '../../hooks/main';
+import { changeOrderSort, changeTypeSort } from '../../store/state-filter-and-sort/state-filter-and-sort';
 
-type CatalogSortProps = {
-  typeSort: string | null;
-  order: string | null;
-  setSearchParams: (nextInit: URLSearchParamsInit,
-    navigateOptions?: { replace?: boolean | undefined; state: any} |
-    undefined) => void;
-};
-
-function CatalogSort({typeSort, order, setSearchParams}: CatalogSortProps): JSX.Element {
-  const location = useLocation();
-  const params = new URLSearchParams(location.search);
+function CatalogSort(): JSX.Element {
+  const {sortState} = useAppSelector(({STATE}) => STATE);
+  const dispatch = useDispatch();
 
   const handleChangeSort = (name: string) => () => {
-    params.set('_sort', name);
-    params.set('_order', TypeOrder.Asc);
-    setSearchParams(params);
+    dispatch(changeTypeSort(name));
+    dispatch(changeOrderSort(TypeOrder.Asc));
   };
 
   const handleChangeOrder = (name: string) => () => {
-    if (typeSort === null) {
-      params.set('_sort', TypeSort.Price);
-      params.set('_order', name);
-      setSearchParams(params);
+    if (sortState.sort === '') {
+      dispatch(changeOrderSort(name));
+      dispatch(changeTypeSort(TypeSort.Price));
     }
 
-    switch (typeSort) {
+    switch (sortState.sort) {
       case TypeSort.Price:
-        params.set('_order', name);
-        setSearchParams(params);
+        dispatch(changeOrderSort(name));
         break;
       case TypeSort.Rating:
-        params.set('_order', name);
-        setSearchParams(params);
+        dispatch(changeOrderSort(name));
         break;
     }
   };
@@ -44,14 +34,14 @@ function CatalogSort({typeSort, order, setSearchParams}: CatalogSortProps): JSX.
       <h2 className="catalog-sort__title">Сортировать:</h2>
       <div className="catalog-sort__type">
         <button className={`catalog-sort__type-button
-          ${(typeSort === TypeSort.Price) ? 'catalog-sort__type-button--active' : ''}`}
+          ${(sortState.sort === TypeSort.Price) ? 'catalog-sort__type-button--active' : ''}`}
         aria-label="по цене"
         onClick={handleChangeSort(TypeSort.Price)}
         >
            по цене
         </button>
         <button className={`catalog-sort__type-button
-          ${(typeSort === TypeSort.Rating) ? 'catalog-sort__type-button--active' : ''}`}
+          ${(sortState.sort === TypeSort.Rating) ? 'catalog-sort__type-button--active' : ''}`}
         aria-label="по популярности"
         onClick={handleChangeSort(TypeSort.Rating)}
         >
@@ -61,14 +51,14 @@ function CatalogSort({typeSort, order, setSearchParams}: CatalogSortProps): JSX.
       <div className="catalog-sort__order">
         <button
           className={`catalog-sort__order-button catalog-sort__order-button--up
-            ${(order === TypeOrder.Asc ) ? 'catalog-sort__order-button--active' : ''}`}
+            ${(sortState.order === TypeOrder.Asc) ? 'catalog-sort__order-button--active' : ''}`}
           aria-label="По возрастанию"
           onClick={handleChangeOrder(TypeOrder.Asc)}
         >
         </button>
         <button
           className={`catalog-sort__order-button catalog-sort__order-button--down
-            ${(order === TypeOrder.Desc) ? 'catalog-sort__order-button--active' : ''}`}
+            ${(sortState.order === TypeOrder.Desc) ? 'catalog-sort__order-button--active' : ''}`}
           aria-label="По убыванию"
           onClick={handleChangeOrder(TypeOrder.Desc)}
         >

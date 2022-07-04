@@ -2,7 +2,7 @@ import React from 'react';
 import { useState, useMemo } from 'react';
 import { Scroll } from '../../const';
 import { useAppDispatch } from '../../hooks/main';
-import { openModal } from '../../store/main-process/main-process';
+import { openModal } from '../../store/modals/modals';
 import { Comment } from '../../types/comment';
 import Rating from '../rating/rating';
 

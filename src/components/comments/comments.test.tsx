@@ -22,7 +22,7 @@ describe('Component: Comments', () => {
       comments: {'1': mockTestComments},
 
     },
-    [NameSpace.Main]: {
+    [NameSpace.Modal]: {
       isVisible: false,
       isSuccess: false,
     },

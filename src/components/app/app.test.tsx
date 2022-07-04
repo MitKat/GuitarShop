@@ -22,9 +22,21 @@ describe('Component App', () => {
       isDataLoaded: true,
       comments: {'1': mockTestComments},
     },
-    [NameSpace.Main]: {
+    [NameSpace.Modal]: {
       isVisible: false,
       isSuccess: false,
+    },
+    [NameSpace.State]: {
+      filtersState: {
+        priceStart: 0,
+        priceEnd: 0,
+        typeGuitar: [],
+        stringCount: [],
+      },
+      sortState: {
+        sort: 'price',
+        order: 'asc',
+      },
     },
   });
 

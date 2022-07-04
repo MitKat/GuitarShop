@@ -1,10 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
-import { APIRoute } from '../const';
+import { APIRoute, ParamsFilter } from '../const';
 import { loadCards, loadComments, loadFilteredCards, loadProduct } from './data-process/data-process';
 import { CommentData } from '../types/comment-data';
 import { errorHandle } from '../services/error-handle';
 import { AppDispatch, State } from '../types/state';
+import { stringify } from 'query-string';
 
 export const fetchCardsAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch,
@@ -22,14 +23,25 @@ export const fetchCardsAction = createAsyncThunk<void, undefined, {
   },
 );
 
-export const fetchFilteredCardsAction = createAsyncThunk<void, string, {
+export const fetchFilteredCardsAction = createAsyncThunk<void, any, {
   dispatch: AppDispatch,
   state: State,
   extra: AxiosInstance
 }>(
   'data/fetchFilter',
-  async (search, {dispatch, extra: api}) => {
+  async ({filtersState, sortState}, {dispatch, extra: api}) => {
     try {
+      const minPrice = `${(filtersState.priceStart !== 0) ? `&${ParamsFilter.PriceStart}=${filtersState.priceStart}` : ''}`;
+      const maxPrice = `${(filtersState.priceEnd !== 0) ? `&${ParamsFilter.PriceEnd}=${filtersState.priceEnd}` : ''}`;
+
+      const typeGuitar =`${(filtersState.typeGuitar.length !== 0) ? `&${stringify({type: filtersState.typeGuitar})}` : ''}`;
+      const countString = `${(filtersState.stringCount.length !== 0) ? `&${stringify({stringCount: filtersState.stringCount})}` : ''}`;
+      const typeSort = `${(sortState.sort !== '') ? `&_sort=${sortState.sort}` : ''}`;
+      const orderSort = `${(sortState.order !== '') ? `&_order=${sortState.order}` : ''}`;
+
+      const search = `?${minPrice}${maxPrice}${typeGuitar}${countString}${typeSort}${orderSort}`;
+
+      window.history.replaceState(null, '', search);
       const {data} = await api.get(`${APIRoute.Cards}${search}`);
       dispatch(loadFilteredCards(data));
     } catch (error) {

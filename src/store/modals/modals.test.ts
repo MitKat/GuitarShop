@@ -1,9 +1,9 @@
-import { closeModal, mainProcess, openModal, openModalSuccess } from './main-process';
+import { closeModal, modals, openModal, openModalSuccess } from './modals';
 
 
 describe('Reducer: mainProcess', () => {
   it('without additional parameters should return initial state', () => {
-    expect(mainProcess.reducer(void 0, {type: 'UNKNOWN_ACTION'}))
+    expect(modals.reducer(void 0, {type: 'UNKNOWN_ACTION'}))
       .toEqual({
         isVisible: false,
         isSuccess: false,
@@ -16,19 +16,19 @@ describe('Reducer: mainProcess', () => {
   };
 
   it('should open modal', () => {
-    expect(mainProcess.reducer(state, openModal()))
+    expect(modals.reducer(state, openModal()))
       .toEqual({...state, isVisible: true,
       });
   });
 
   it('should open modal success', () => {
-    expect(mainProcess.reducer(state, openModalSuccess()))
+    expect(modals.reducer(state, openModalSuccess()))
       .toEqual({...state, isSuccess: true,
       });
   });
 
   it('should close all modal', () => {
-    expect(mainProcess.reducer(state, closeModal()))
+    expect(modals.reducer(state, closeModal()))
       .toEqual({
         isVisible: false,
         isSuccess: false,

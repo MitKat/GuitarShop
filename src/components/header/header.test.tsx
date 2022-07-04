@@ -20,7 +20,7 @@ describe('Component: FormSearch', () => {
       isDataLoaded: true,
       comments:  {1: mockTestComments},
     },
-    [NameSpace.Main]: {
+    [NameSpace.Modal]: {
       isVisible: false,
       isSuccess: false,
     },

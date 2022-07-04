@@ -3,7 +3,7 @@ import FocusLock from 'react-focus-lock';
 import { NAME_KEY_ESCAPE, Scroll } from '../../const';
 import { useAppDispatch } from '../../hooks/main';
 import { sendComment } from '../../store/api-actions';
-import { closeModal, openModalSuccess } from '../../store/main-process/main-process';
+import { closeModal, openModalSuccess } from '../../store/modals/modals';
 import { CommentData } from '../../types/comment-data';
 import './modal-feedback.css';
 

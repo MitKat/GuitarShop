@@ -11,8 +11,8 @@ const initialState: InitialState = {
   isSuccess: false,
 };
 
-export const mainProcess = createSlice({
-  name: NameSpace.Main,
+export const modals = createSlice({
+  name: NameSpace.Modal,
   initialState,
   reducers: {
     openModal: (state) => {
@@ -32,4 +32,4 @@ export const {
   openModal,
   closeModal,
   openModalSuccess,
-} = mainProcess.actions;
+} = modals.actions;

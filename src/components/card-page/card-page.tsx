@@ -26,8 +26,8 @@ function CardPage(): JSX.Element {
 
   const product = useAppSelector(({DATA}) => DATA.product);
   const comments = useAppSelector(({DATA}) => DATA.comments);
-  const isVisible = useAppSelector(({MAIN}) => MAIN.isVisible);
-  const isSuccess = useAppSelector(({MAIN}) => MAIN.isSuccess);
+  const isVisible = useAppSelector(({MODAL}) => MODAL.isVisible);
+  const isSuccess = useAppSelector(({MODAL}) => MODAL.isSuccess);
 
   const [isHiddenCharacteristic, setIsHiddenCharacteristic] = useState(false);
   const [isHiddenDescription, setIsHiddenDescription] = useState(true);
@@ -54,7 +54,7 @@ function CardPage(): JSX.Element {
           <div className="product-container">
             <img className="product-container__img"
               src={`${process.env.PUBLIC_URL}/${product.previewImg}`}
-              width="90" height="235" alt=""
+              width="90" height="235" alt={product.name}
             />
             <div className="product-container__info-wrapper">
               <h2 className="product-container__title title title--big title--uppercase">{product.name}</h2>

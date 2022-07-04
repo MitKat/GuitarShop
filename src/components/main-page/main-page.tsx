@@ -1,9 +1,11 @@
-import { useEffect, useMemo, useState } from 'react';
+import { parse } from 'query-string';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useLocation, useParams, useSearchParams } from 'react-router-dom';
-import { CARDS_PER_PAGE, TypeOrder, TypeSort } from '../../const';
+import { useLocation, useParams } from 'react-router-dom';
+import { CARDS_PER_PAGE } from '../../const';
 import { useAppSelector } from '../../hooks/main';
 import { fetchFilteredCardsAction } from '../../store/api-actions';
+import { addFilterStringCount, addFilterType, changeFilterPriceEnd, changeFilterPriceStart, changeOrderSort, changeTypeSort } from '../../store/state-filter-and-sort/state-filter-and-sort';
 import Breadcrumbs from '../breadcrumbs/breadcrumbs';
 import CatalogCards from '../catalog-cards/catalog-cards';
 import CatalogFilter from '../catalog-filter/catalog-filter';
@@ -20,54 +22,53 @@ type MainPageProps = {
 function MainPage({urlPage}: MainPageProps): JSX.Element {
   const {catalogCards} = useAppSelector(({DATA}) => DATA);
   const {isDataLoaded} = useAppSelector(({DATA}) => DATA);
+  const {filtersState} = useAppSelector(({STATE}) => STATE);
+  const {sortState} = useAppSelector(({STATE}) => STATE);
   const {catalogFilteredCards} = useAppSelector(({DATA}) => DATA);
   const {pageNumber} = useParams();
   const dispatch = useDispatch();
   const location = useLocation();
-  const [searchParams, setSearchParams] = useSearchParams();
 
   //filter
   const listToRender = (catalogFilteredCards) ? catalogFilteredCards : catalogCards;
 
   useEffect(() => {
-    dispatch(fetchFilteredCardsAction(location.search));
-  }, [dispatch, location.search]);
-
-  //sorting
-  const typeSort = searchParams.get('_sort');
-  const order = searchParams.get('_order');
-
-  useMemo(() => {
-    let sortedList = catalogCards;
-
-    if (!typeSort) {
-      return sortedList;
+    const parsed = parse(location.search);
+    if (parsed._order) {
+      dispatch(changeOrderSort(parsed._order));
     }
-
-    switch (order) {
-      case TypeOrder.Asc:
-        switch (typeSort) {
-          case TypeSort.Price:
-            sortedList = [...sortedList].sort((guitarA, guitarB) => (guitarA.price - guitarB.price));
-            break;
-          case TypeSort.Rating:
-            sortedList = [...sortedList].sort((guitarA, guitarB) => (guitarA.rating - guitarB.rating));
-            break;
-        }
-        break;
-      case TypeOrder.Desc:
-        switch (typeSort) {
-          case TypeSort.Price:
-            sortedList = [...sortedList].sort((guitarA, guitarB) => (guitarB.price - guitarA.price));
-            break;
-          case TypeSort.Rating:
-            sortedList = [...sortedList].sort((guitarA, guitarB) => (guitarB.rating - guitarA.rating));
-            break;
-        }
-        break;
+    if (parsed._sort) {
+      dispatch(changeTypeSort(parsed._sort));
     }
-    return sortedList;
-  }, [catalogCards, typeSort, order]);
+    if (parsed.price_gte) {
+      dispatch(changeFilterPriceStart(parsed.price_gte));
+    }
+    if (parsed.price_lte) {
+      dispatch(changeFilterPriceEnd(parsed.price_lte));
+    }
+    if (parsed.type) {
+      if (parsed.type.length > 0) {
+        Array(parsed.type).forEach((item) => {
+          dispatch(addFilterType(item));
+        });
+      } else {
+        dispatch(addFilterType(parsed.type));
+      }
+    }
+    if (parsed.stringCount) {
+      if (parsed.stringCount.length > 0) {
+        Array(parsed.stringCount).forEach((item) => {
+          dispatch(addFilterStringCount(item));
+        });
+      } else {
+        dispatch(addFilterStringCount(parsed.stringCount));
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    dispatch(fetchFilteredCardsAction({filtersState, sortState}));
+  }, [dispatch, filtersState, sortState]);
 
   const countPage = Math.ceil(listToRender.length/CARDS_PER_PAGE);
   const [cards, setCards] = useState(listToRender.slice(0, CARDS_PER_PAGE));
@@ -93,10 +94,8 @@ function MainPage({urlPage}: MainPageProps): JSX.Element {
           <h1 className="page-content__title title title--bigger">Каталог гитар</h1>
           <Breadcrumbs />
           <div className="catalog">
-            <CatalogFilter setSearchParams={setSearchParams}/>
-            <CatalogSort
-              typeSort={typeSort} order={order} setSearchParams={setSearchParams}
-            />
+            <CatalogFilter/>
+            <CatalogSort/>
             {
               isDataLoaded ?
                 <>

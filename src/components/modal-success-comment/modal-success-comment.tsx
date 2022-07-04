@@ -2,7 +2,7 @@
 import { useCallback, useEffect } from 'react';
 import { NAME_KEY_ESCAPE, Scroll } from '../../const';
 import { useAppDispatch } from '../../hooks/main';
-import { closeModal } from '../../store/main-process/main-process';
+import { closeModal } from '../../store/modals/modals';
 import './modal-success-comment.css';
 
 function  ModalSuccessComment(): JSX.Element {
