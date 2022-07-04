@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useRef, useState } from 'react';
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -69,33 +69,24 @@ function CatalogFilter(): JSX.Element {
   const handleChangeTypeGuitar = (evt: ChangeEvent<HTMLInputElement>) => {
     const typesGuitar = filtersState.typeGuitar;
     const typeParams = typesGuitar.find((item) => item === evt.target.value);
-
     if (typeParams) {
       dispatch(deleteFilterType(evt.target.value));
-      const filteredTypesGuitar = typesGuitar.filter((item) => item !== typeParams);
-
-      if (filteredTypesGuitar.length === 0) {
-        resetIsDisabledCountString();
-      } else {
-        setIsDisabled4(!filteredTypesGuitar.find((item) => TypeGuitar.ukulele === item || TypeGuitar.electric === item));
-        setIsDisabled6(!filteredTypesGuitar.find((item) => TypeGuitar.acoustic === item || TypeGuitar.electric === item));
-        setIsDisabled7(!filteredTypesGuitar.find((item) => TypeGuitar.acoustic === item || TypeGuitar.electric === item));
-        setIsDisabled12(!filteredTypesGuitar.find((item) => TypeGuitar.acoustic === item));
-      }
     } else {
       dispatch(addFilterType(evt.target.value));
     }
 
-    if (typesGuitar.length === 0) {
+  };
+
+  useEffect(() => {
+    if (filtersState.typeGuitar.length === 0) {
       resetIsDisabledCountString();
     } else {
-      setIsDisabled4(!typesGuitar.find((item) => TypeGuitar.ukulele === item || TypeGuitar.electric === item));
-      setIsDisabled6(!typesGuitar.find((item) => TypeGuitar.acoustic === item || TypeGuitar.electric === item));
-      setIsDisabled7(!typesGuitar.find((item) => TypeGuitar.acoustic === item || TypeGuitar.electric === item));
-      setIsDisabled12(!typesGuitar.find((item) => TypeGuitar.acoustic === item));
+      setIsDisabled4(!filtersState.typeGuitar.find((item) => TypeGuitar.ukulele === item || TypeGuitar.electric === item));
+      setIsDisabled6(!filtersState.typeGuitar.find((item) => TypeGuitar.acoustic === item || TypeGuitar.electric === item));
+      setIsDisabled7(!filtersState.typeGuitar.find((item) => TypeGuitar.acoustic === item || TypeGuitar.electric === item));
+      setIsDisabled12(!filtersState.typeGuitar.find((item) => TypeGuitar.acoustic === item));
     }
-
-  };
+  }, [filtersState.typeGuitar]);
 
   const handleChangeCountString = (evt: ChangeEvent<HTMLInputElement>) => {
     const listCount = filtersState.stringCount;
