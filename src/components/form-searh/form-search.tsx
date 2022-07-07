@@ -1,7 +1,9 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { NAME_KEY_ENTER } from '../../const';
 import { useAppSelector } from '../../hooks/main';
+import { closeFormSearch, openFormSearch } from '../../store/modals/modals';
 import { Card } from '../../types/card';
 
 const filterModel = (searchText: string, listOfModel: Card[]) => {
@@ -16,14 +18,16 @@ const filterModel = (searchText: string, listOfModel: Card[]) => {
 
 function FormSearch(): JSX.Element {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const isFormSearch = useAppSelector(({MODAL}) => MODAL.isFormSearch);
   const {catalogCards} = useAppSelector(({DATA}) => DATA);
   const [guitarList, setGuitarList] = useState(catalogCards);
   const [valueSearch, setValueSearch] = useState('');
-  const [isListOpen, setIsListOpen] = useState(false);
 
   const handleChangeSearch = (evt:ChangeEvent<HTMLInputElement>) => {
+    setValueSearch('');
     setValueSearch(evt.target.value);
-    setIsListOpen(true);
+    dispatch(openFormSearch());
   };
 
   useEffect(() => {
@@ -39,6 +43,7 @@ function FormSearch(): JSX.Element {
 
   const handleClickSearch = (id: number) => () => {
     navigate(`/product/${id}`);
+    handleResetSearch();
   };
 
   const handleKeyDown = (evt: React.KeyboardEvent<HTMLLIElement>, id: number) => {
@@ -49,7 +54,7 @@ function FormSearch(): JSX.Element {
 
   const handleResetSearch = () => {
     setValueSearch('');
-    setIsListOpen(false);
+    dispatch(closeFormSearch());
   };
 
   return (
@@ -65,22 +70,21 @@ function FormSearch(): JSX.Element {
           placeholder="что вы ищите?"
           value={valueSearch}
           onChange={handleChangeSearch}
+          onFocus={handleResetSearch}
         />
         <label className="visually-hidden" htmlFor="search">Поиск</label>
-
-        <ul className={isListOpen ? 'form-search__select-list list-opened' : 'form-search__select-list hidden'}>
-          {guitarList.map((guitar) =>
-            (
-              <li className="form-search__select-item"
-                key={guitar.id}
-                tabIndex={0}
-                data-value={guitar.id}
-                onClick={handleClickSearch(guitar.id)}
-                onKeyDown={(evt) => handleKeyDown(evt, guitar.id)}
-              >
-                {guitar.name}
-              </li>
-            ),
+        <ul className={isFormSearch ? 'form-search__select-list list-opened' : 'form-search__select-list hidden'}>
+          {guitarList.map((guitar) => (
+            <li className="form-search__select-item"
+              key={guitar.id}
+              tabIndex={0}
+              data-value={guitar.id}
+              onClick={handleClickSearch(guitar.id)}
+              onKeyDown={(evt) => handleKeyDown(evt, guitar.id)}
+            >
+              {guitar.name}
+            </li>
+          ),
           )}
         </ul>
         <button className="form-search__reset" type="reset"

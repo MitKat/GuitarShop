@@ -4,11 +4,13 @@ import { NameSpace } from '../../const';
 interface InitialState {
   isVisible: boolean,
   isSuccess: boolean,
+  isFormSearch: boolean,
 }
 
 const initialState: InitialState = {
   isVisible: false,
   isSuccess: false,
+  isFormSearch: false,
 };
 
 export const modals = createSlice({
@@ -25,6 +27,12 @@ export const modals = createSlice({
     openModalSuccess: (state) => {
       state.isSuccess = true;
     },
+    openFormSearch: (state) => {
+      state.isFormSearch = true;
+    },
+    closeFormSearch: (state) => {
+      state.isFormSearch = false;
+    },
   },
 });
 
@@ -32,4 +40,6 @@ export const {
   openModal,
   closeModal,
   openModalSuccess,
+  openFormSearch,
+  closeFormSearch,
 } = modals.actions;

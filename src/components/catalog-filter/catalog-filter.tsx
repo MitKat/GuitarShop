@@ -2,23 +2,26 @@ import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { TypeGuitar, TypeGuitarTranslation } from '../../const';
+import { CountString, TypeGuitar, TypeGuitarTranslation } from '../../const';
 import { useAppSelector } from '../../hooks/main';
 import { addFilterStringCount, addFilterType, changeFilterPriceEnd, changeFilterPriceStart, deleteFilterStringCount, deleteFilterType, resetFilter } from '../../store/state-filter-and-sort/state-filter-and-sort';
 import { getMaxPrice, getMinPrice } from '../../utils';
 
 function CatalogFilter(): JSX.Element {
-  const {catalogCards} = useAppSelector(({DATA}) => DATA);
+  const {catalogFilteredCards} = useAppSelector(({DATA}) => DATA);
   const {filtersState} = useAppSelector(({STATE}) => STATE);
   const [isDisabled4, setIsDisabled4] = useState(false);
   const [isDisabled6, setIsDisabled6] = useState(false);
   const [isDisabled7, setIsDisabled7] = useState(false);
   const [isDisabled12, setIsDisabled12] = useState(false);
+  const [isDisabledAcoustic, setIsDisabledAcoustic] = useState(false);
+  const [isDisabledElectric, setIsDisabledElectric] = useState(false);
+  const [isDisabledUkulele, setIsDisabledUkulele] = useState(false);
 
   const dispatch = useDispatch();
 
-  const minPrice = getMinPrice(catalogCards);
-  const maxPrice = getMaxPrice(catalogCards);
+  const minPrice = getMinPrice(catalogFilteredCards);
+  const maxPrice = getMaxPrice(catalogFilteredCards);
 
   const minPriceRef = useRef<HTMLInputElement | null>(null);
   const maxPriceRef = useRef<HTMLInputElement | null>(null);
@@ -65,6 +68,11 @@ function CatalogFilter(): JSX.Element {
     setIsDisabled7(false);
     setIsDisabled12(false);
   };
+  const resetIsDisabledTypeGuitar = () => {
+    setIsDisabledAcoustic(false);
+    setIsDisabledElectric(false);
+    setIsDisabledUkulele(false);
+  };
 
   const handleChangeTypeGuitar = (evt: ChangeEvent<HTMLInputElement>) => {
     const typesGuitar = filtersState.typeGuitar;
@@ -88,6 +96,16 @@ function CatalogFilter(): JSX.Element {
     }
   }, [filtersState.typeGuitar]);
 
+  useEffect(() => {
+    if (filtersState.stringCount.length === 0) {
+      resetIsDisabledTypeGuitar();
+    } else {
+      setIsDisabledAcoustic(!filtersState.stringCount.find((item) => CountString.count6 === item || CountString.count7 === item || CountString.count12 === item));
+      setIsDisabledElectric(!filtersState.stringCount.find((item) => CountString.count4 === item || CountString.count6 === item || CountString.count7 === item));
+      setIsDisabledUkulele(!filtersState.stringCount.find((item) => CountString.count4 === item));
+    }
+  }, [filtersState.stringCount]);
+
   const handleChangeCountString = (evt: ChangeEvent<HTMLInputElement>) => {
     const listCount = filtersState.stringCount;
     const countParams = listCount.find((item) => item === evt.target.value);
@@ -104,6 +122,21 @@ function CatalogFilter(): JSX.Element {
     resetIsDisabledCountString();
     dispatch(resetFilter());
   };
+
+  // const onDisabledType = (item: string) => () => {
+  //   if (item === 'acoustic') {
+
+  //     isDisabledAcoustic;
+  //   } else {
+  //     if (item === 'electric') {
+  //       isDisabledElectric;
+  //     } else {
+  //      isDisabledUkulele;
+  //     }
+
+  //   }
+
+  // };
 
   return (
     <form className="catalog-filter">
@@ -129,6 +162,7 @@ function CatalogFilter(): JSX.Element {
               <input className="visually-hidden" type="checkbox" id={item} name={item} value={item}
                 onChange={handleChangeTypeGuitar}
                 checked={filtersState.typeGuitar.includes(item)}
+                disabled={(isDisabledAcoustic&&(item==='acoustic')) || (isDisabledElectric&&(item==='electric')) || (isDisabledUkulele&&(item==='ukulele'))}
               />
               <label htmlFor={item}>{TypeGuitarTranslation.get(item)}</label>
             </div>))

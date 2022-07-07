@@ -7,12 +7,14 @@ describe('Reducer: mainProcess', () => {
       .toEqual({
         isVisible: false,
         isSuccess: false,
+        isFormSearch: false,
       });
   });
 
   const state = {
     isVisible: false,
     isSuccess: false,
+    isFormSearch: false,
   };
 
   it('should open modal', () => {

@@ -5,6 +5,7 @@ import { useLocation, useParams } from 'react-router-dom';
 import { CARDS_PER_PAGE } from '../../const';
 import { useAppSelector } from '../../hooks/main';
 import { fetchFilteredCardsAction } from '../../store/api-actions';
+import { closeFormSearch } from '../../store/modals/modals';
 import { addFilterStringCount, addFilterType, changeFilterPriceEnd, changeFilterPriceStart, changeOrderSort, changeTypeSort } from '../../store/state-filter-and-sort/state-filter-and-sort';
 import Breadcrumbs from '../breadcrumbs/breadcrumbs';
 import CatalogCards from '../catalog-cards/catalog-cards';
@@ -86,8 +87,12 @@ function MainPage({urlPage}: MainPageProps): JSX.Element {
 
   }, [listToRender, pageNumber, urlPage]);
 
+  const handleCloseFormSearch = () => {
+    dispatch(closeFormSearch());
+  };
+
   return (
-    <div className="wrapper">
+    <div className="wrapper" onClick={handleCloseFormSearch}>
       <Header isCatalog />
       <main className="page-content">
         <div className="container">

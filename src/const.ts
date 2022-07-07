@@ -55,6 +55,13 @@ export const TypeGuitar = {
   ukulele: 'ukulele',
 };
 
+export const CountString = {
+  count4: '4',
+  count6: '6',
+  count7: '7',
+  count12: '12',
+};
+
 export enum ParamsFilter {
   PriceStart = 'price_gte',
   PriceEnd = 'price_lte',

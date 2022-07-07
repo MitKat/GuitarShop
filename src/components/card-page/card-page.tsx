@@ -5,6 +5,7 @@ import { TypeGuitarTranslation } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks/main';
 import useScrollTop from '../../hooks/use-scroll-top';
 import { fetchCommentsAction, fetchProductAction } from '../../store/api-actions';
+import { closeFormSearch } from '../../store/modals/modals';
 import Breadcrumbs from '../breadcrumbs/breadcrumbs';
 import Comments from '../comments/comments';
 import Footer from '../footer/footer';
@@ -42,8 +43,12 @@ function CardPage(): JSX.Element {
     }
   };
 
+  const handleCloseFormSearch = () => {
+    dispatch(closeFormSearch());
+  };
+
   return (
-    <div className="wrapper">
+    <div className="wrapper" onClick={handleCloseFormSearch}>
       <Header />
       <main className="page-content">
         <div className="container">
