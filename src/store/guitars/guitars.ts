@@ -6,21 +6,27 @@ import { Comment } from '../../types/comment';
 interface InitialState {
   catalogCards: Card[];
   catalogFilteredCards: Card[];
+  guitarsInCart: Card[];
   product: Card;
   isDataLoaded: boolean;
   comments: {[guitarId: string]: Comment[]};
+  clickGuitarId: number,
 }
+
+const guitarsInCart = localStorage.getItem('guitarsInCart');
 
 const initialState: InitialState = {
   catalogCards: [],
   catalogFilteredCards: [],
+  guitarsInCart: guitarsInCart ? JSON.parse(guitarsInCart) : [],
   product: InitialProduct,
   isDataLoaded: false,
   comments: {},
+  clickGuitarId: 0,
 };
 
-export const dataProcess = createSlice({
-  name: NameSpace.Data,
+export const guitars = createSlice({
+  name: NameSpace.Guitars,
   initialState,
   reducers: {
     loadCards: (state, action) => {
@@ -39,6 +45,16 @@ export const dataProcess = createSlice({
         [action.payload.id]: action.payload.data,
       };
     },
+    setGuitarInCart: (state, action) => {
+      state.guitarsInCart = [...state.guitarsInCart, action.payload];
+      localStorage.setItem('guitarsInCart', JSON.stringify(state.guitarsInCart));
+    },
+    deleteGuitarFromCart: (state, action) => {
+      state.guitarsInCart = [...state.guitarsInCart].filter((item) => item.id !== action.payload);
+    },
+    onClickGuitar: (state, action) => {
+      state.clickGuitarId = action.payload;
+    },
   },
 });
 
@@ -47,4 +63,7 @@ export const {
   loadFilteredCards,
   loadProduct,
   loadComments,
-} = dataProcess.actions;
+  onClickGuitar,
+  setGuitarInCart,
+  deleteGuitarFromCart,
+} = guitars.actions;

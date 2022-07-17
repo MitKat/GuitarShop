@@ -20,7 +20,7 @@ function FormSearch(): JSX.Element {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isFormSearch = useAppSelector(({MODAL}) => MODAL.isFormSearch);
-  const {catalogCards} = useAppSelector(({DATA}) => DATA);
+  const {catalogCards} = useAppSelector(({GUITARS}) => GUITARS);
   const [guitarList, setGuitarList] = useState(catalogCards);
   const [valueSearch, setValueSearch] = useState('');
 

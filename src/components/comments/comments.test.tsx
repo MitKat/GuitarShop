@@ -15,7 +15,7 @@ describe('Component: Comments', () => {
 
   const mockStore = configureMockStore(middlewares);
   const fakeStore = mockStore({
-    [NameSpace.Data]: {
+    [NameSpace.Guitars]: {
       catalogCards: mockTestCards,
       product: mockTestCard,
       isDataLoaded: true,

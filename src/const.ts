@@ -1,7 +1,8 @@
 export enum AppRoute {
   Main = '/',
   Catalog = '/catalog/page_:pageNumber',
-  CardPage = '/product/:id',
+  GuitarPage = '/product/:id',
+  CartPage = '/cart',
   NotFound = '/*',
 }
 
@@ -12,8 +13,8 @@ export enum APIRoute {
 
 export enum NameSpace {
   Modal = 'MODAL',
-  Data = 'DATA',
-  State = 'STATE',
+  Guitars = 'GUITARS',
+  FiltersAndSort = 'FILTERS_AND_SORT',
 }
 
 export enum HttpCode {

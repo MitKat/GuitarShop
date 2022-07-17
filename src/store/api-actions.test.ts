@@ -6,7 +6,7 @@ import thunk from 'redux-thunk';
 import { Action, ThunkDispatch } from '@reduxjs/toolkit';
 import { APIRoute } from '../const';
 import { fetchCardsAction, fetchCommentsAction, fetchFilteredCardsAction, fetchProductAction, sendComment } from './api-actions';
-import { loadCards, loadComments, loadFilteredCards, loadProduct } from './data-process/data-process';
+import { loadCards, loadComments, loadFilteredCards, loadProduct } from './guitars/guitars';
 import { mockCommentData, mockTestCard, mockTestCards, mockTestComments } from '../components/mock/mock';
 
 describe('Async actions', () => {

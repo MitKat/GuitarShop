@@ -5,7 +5,7 @@ import { useAppSelector } from '../../hooks/main';
 import { changeOrderSort, changeTypeSort } from '../../store/state-filter-and-sort/state-filter-and-sort';
 
 function CatalogSort(): JSX.Element {
-  const {sortState} = useAppSelector(({STATE}) => STATE);
+  const {sortState} = useAppSelector(({FILTERS_AND_SORT}) => FILTERS_AND_SORT);
   const dispatch = useDispatch();
 
   const handleChangeSort = (name: string) => () => {

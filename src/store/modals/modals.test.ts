@@ -1,24 +1,30 @@
-import { closeModal, modals, openModal, openModalSuccess } from './modals';
+import { closeModal, modals, openModalFeedback, openModalSuccess } from './modals';
 
 
 describe('Reducer: mainProcess', () => {
   it('without additional parameters should return initial state', () => {
     expect(modals.reducer(void 0, {type: 'UNKNOWN_ACTION'}))
       .toEqual({
-        isVisible: false,
+        isFeedback: false,
         isSuccess: false,
         isFormSearch: false,
+        isAddInCart: false,
+        isAddedSuccess: false,
+        isDeleteFromCart: false,
       });
   });
 
   const state = {
-    isVisible: false,
+    isFeedback: false,
     isSuccess: false,
     isFormSearch: false,
+    isAddInCart: false,
+    isAddedSuccess: false,
+    isDeleteFromCart: false,
   };
 
   it('should open modal', () => {
-    expect(modals.reducer(state, openModal()))
+    expect(modals.reducer(state, openModalFeedback()))
       .toEqual({...state, isVisible: true,
       });
   });

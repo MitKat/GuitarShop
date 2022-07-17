@@ -29,7 +29,7 @@ const initialState: InitialState = {
 };
 
 export const stateFilterAndSort = createSlice({
-  name: NameSpace.State,
+  name: NameSpace.FiltersAndSort,
   initialState,
   reducers: {
     changeFilterPriceStart: (state, action) => {

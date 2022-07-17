@@ -16,7 +16,7 @@ describe('Component App', () => {
   const mockStore = configureMockStore(middlewares);
 
   const fakeStore = mockStore({
-    [NameSpace.Data]: {
+    [NameSpace.Guitars]: {
       catalogCards: mockTestCards,
       product: mockTestCard,
       isDataLoaded: true,
@@ -26,7 +26,7 @@ describe('Component App', () => {
       isVisible: false,
       isSuccess: false,
     },
-    [NameSpace.State]: {
+    [NameSpace.FiltersAndSort]: {
       filtersState: {
         priceStart: 0,
         priceEnd: 0,

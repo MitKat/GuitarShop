@@ -5,17 +5,19 @@ import { TypeGuitarTranslation } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks/main';
 import useScrollTop from '../../hooks/use-scroll-top';
 import { fetchCommentsAction, fetchProductAction } from '../../store/api-actions';
-import { closeFormSearch } from '../../store/modals/modals';
+import { openModalAddInCart } from '../../store/modals/modals';
 import Breadcrumbs from '../breadcrumbs/breadcrumbs';
 import Comments from '../comments/comments';
 import Footer from '../footer/footer';
 import Header from '../header/header';
+import ModalCartAdd from '../modal-cart-add/modal-cart-add';
+import ModalCartSuccess from '../modal-cart-success/modal-cart-success';
 import ModalFeedback from '../modal-feedback/modal-feedback';
 import ModalSuccessComment from '../modal-success-comment/modal-success-comment';
 import Rating from '../rating/rating';
 
 
-function CardPage(): JSX.Element {
+function GuitarPage(): JSX.Element {
   const dispatch = useAppDispatch();
   const {id} = useParams();
   useScrollTop();
@@ -25,10 +27,12 @@ function CardPage(): JSX.Element {
     dispatch(fetchCommentsAction(Number(id)));
   }, [id, dispatch]);
 
-  const product = useAppSelector(({DATA}) => DATA.product);
-  const comments = useAppSelector(({DATA}) => DATA.comments);
-  const isVisible = useAppSelector(({MODAL}) => MODAL.isVisible);
+  const product = useAppSelector(({GUITARS}) => GUITARS.product);
+  const comments = useAppSelector(({GUITARS}) => GUITARS.comments);
+  const isFeedback = useAppSelector(({MODAL}) => MODAL.isFeedback);
   const isSuccess = useAppSelector(({MODAL}) => MODAL.isSuccess);
+  const isAddInCart = useAppSelector(({MODAL}) => MODAL.isAddInCart);
+  const isAddedSuccess = useAppSelector(({MODAL}) => MODAL.isAddedSuccess);
 
   const [isHiddenCharacteristic, setIsHiddenCharacteristic] = useState(false);
   const [isHiddenDescription, setIsHiddenDescription] = useState(true);
@@ -43,17 +47,19 @@ function CardPage(): JSX.Element {
     }
   };
 
-  const handleCloseFormSearch = () => {
-    dispatch(closeFormSearch());
+  const handleOpenModalAddInCart = () => {
+    dispatch(openModalAddInCart());
   };
 
   return (
-    <div className="wrapper" onClick={handleCloseFormSearch}>
+    <div className="wrapper">
       <Header />
       <main className="page-content">
         <div className="container">
-          {isVisible && <ModalFeedback productName={product.name} productId={product.id}/>}
+          {isFeedback && <ModalFeedback productName={product.name} productId={product.id}/>}
           {isSuccess && <ModalSuccessComment />}
+          {isAddInCart && <ModalCartAdd />}
+          {isAddedSuccess && <ModalCartSuccess />}
           <h1 className="page-content__title title title--bigger">{product.name}</h1>
           <Breadcrumbs productName={product.name} />
           <div className="product-container">
@@ -116,7 +122,10 @@ function CardPage(): JSX.Element {
             <div className="product-container__price-wrapper">
               <p className="product-container__price-info product-container__price-info--title">Цена:</p>
               <p className="product-container__price-info product-container__price-info--value">{`${product.price} ₽`}</p>
-              <a className="button button--red button--big product-container__button" href=" ">Добавить в корзину</a>
+              <button className="button button--red button--big product-container__button"
+                onClick={handleOpenModalAddInCart}
+              >Добавить в корзину
+              </button>
             </div>
           </div>
           <Comments comments={comments[product.id]} />
@@ -127,5 +136,5 @@ function CardPage(): JSX.Element {
   );
 }
 
-export default React.memo(CardPage);
+export default React.memo(GuitarPage);
 

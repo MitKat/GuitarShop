@@ -3,6 +3,8 @@ import { generatePath, Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks/main';
 import { fetchCommentsAction } from '../../store/api-actions';
+import { onClickGuitar } from '../../store/guitars/guitars';
+import { openModalAddInCart } from '../../store/modals/modals';
 import { Card } from '../../types/card';
 import Rating from '../rating/rating';
 
@@ -12,12 +14,20 @@ type ProductCardProps = {
 
 function ProductCard({card}: ProductCardProps): JSX.Element {
   const dispatch = useAppDispatch();
+  const {guitarsInCart} = useAppSelector(({GUITARS}) => GUITARS);
+
+  const isGuitarInCart = guitarsInCart.some((item) => item.id === card.id);
 
   useEffect(() => {
     dispatch(fetchCommentsAction(card.id));
   }, [card.id, dispatch]);
 
-  const {comments} = useAppSelector(({DATA}) => DATA);
+  const {comments} = useAppSelector(({GUITARS}) => GUITARS);
+
+  const handleOpenModal = () => {
+    dispatch(onClickGuitar(card.id));
+    dispatch(openModalAddInCart());
+  };
 
   return (
     <div className="product-card">
@@ -32,8 +42,15 @@ function ProductCard({card}: ProductCardProps): JSX.Element {
         </p>
       </div>
       <div className="product-card__buttons">
-        <Link className="button button--mini" to={generatePath(AppRoute.CardPage, {id: String(card.id)})}>Подробнее</Link>
-        <a className="button button--red button--mini button--add-to-cart" href="/">Купить</a>
+        <Link className="button button--mini" to={generatePath(AppRoute.GuitarPage, {id: String(card.id)})}>Подробнее</Link>
+        {isGuitarInCart ?
+          <Link className="button button--red-border button--mini button--in-cart" to={AppRoute.CartPage} >В Корзине</Link>
+          :
+          <button className="button button--red button--mini button--add-to-cart"
+            onClick={handleOpenModal}
+          >
+          Купить
+          </button>}
       </div>
     </div>
   );

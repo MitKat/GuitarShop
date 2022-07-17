@@ -3,9 +3,10 @@ import { AppRoute } from '../../const';
 
 type BreadcrumbsProps = {
     productName?: string;
+    cart?: boolean;
 }
 
-function Breadcrumbs({productName}: BreadcrumbsProps): JSX.Element {
+function Breadcrumbs({productName, cart}: BreadcrumbsProps): JSX.Element {
   return (
     <ul className="breadcrumbs page-content__breadcrumbs">
       <li className="breadcrumbs__item">
@@ -20,6 +21,13 @@ function Breadcrumbs({productName}: BreadcrumbsProps): JSX.Element {
           <a className="link" href='?#'>{productName}</a>
         </li>
       }
+      {
+        cart &&
+        <li className="breadcrumbs__item">
+          <a className="link" href={AppRoute.CartPage}>Корзина</a>
+        </li>
+      }
+
     </ul>
   );
 }

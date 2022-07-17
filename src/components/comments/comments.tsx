@@ -2,7 +2,7 @@ import React from 'react';
 import { useState, useMemo } from 'react';
 import { Scroll } from '../../const';
 import { useAppDispatch } from '../../hooks/main';
-import { openModal } from '../../store/modals/modals';
+import { openModalFeedback } from '../../store/modals/modals';
 import { Comment } from '../../types/comment';
 import Rating from '../rating/rating';
 
@@ -35,7 +35,7 @@ function Comments({comments}: CommentsProps): JSX.Element {
   };
 
   const handleOpenModal = () => {
-    dispatch(openModal());
+    dispatch(openModalFeedback());
     document.body.style.overflow = Scroll.NoScrolling;
   };
 

@@ -31,3 +31,5 @@ export const getMaxPrice = (guitarList: Card[]) => {
 
   return max;
 };
+
+

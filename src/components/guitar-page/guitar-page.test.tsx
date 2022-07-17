@@ -6,7 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { NameSpace } from '../../const';
 import { createAPI } from '../../services/api';
 import { mockTestCard, mockTestCards, mockTestComments } from '../mock/mock';
-import CardPage from './card-page';
+import GuitarPage from './guitar-page';
 
 describe('Component: CardPage', () => {
   const api = createAPI();
@@ -14,7 +14,7 @@ describe('Component: CardPage', () => {
 
   const mockStore = configureMockStore(middlewares);
   const fakeStore = mockStore({
-    [NameSpace.Data]: {
+    [NameSpace.Guitars]: {
       catalogCards: mockTestCards,
       product: mockTestCard,
       isDataLoaded: true,
@@ -30,7 +30,7 @@ describe('Component: CardPage', () => {
     render(
       <Provider store={fakeStore}>
         <BrowserRouter>
-          <CardPage />
+          <GuitarPage />
         </BrowserRouter>
       </Provider>,
     );

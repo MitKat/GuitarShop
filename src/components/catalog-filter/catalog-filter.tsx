@@ -8,8 +8,8 @@ import { addFilterStringCount, addFilterType, changeFilterPriceEnd, changeFilter
 import { getMaxPrice, getMinPrice } from '../../utils';
 
 function CatalogFilter(): JSX.Element {
-  const {catalogFilteredCards} = useAppSelector(({DATA}) => DATA);
-  const {filtersState} = useAppSelector(({STATE}) => STATE);
+  const {catalogFilteredCards} = useAppSelector(({GUITARS}) => GUITARS);
+  const {filtersState} = useAppSelector(({FILTERS_AND_SORT}) => FILTERS_AND_SORT);
   const [isDisabled4, setIsDisabled4] = useState(false);
   const [isDisabled6, setIsDisabled6] = useState(false);
   const [isDisabled7, setIsDisabled7] = useState(false);
@@ -122,21 +122,6 @@ function CatalogFilter(): JSX.Element {
     resetIsDisabledCountString();
     dispatch(resetFilter());
   };
-
-  // const onDisabledType = (item: string) => () => {
-  //   if (item === 'acoustic') {
-
-  //     isDisabledAcoustic;
-  //   } else {
-  //     if (item === 'electric') {
-  //       isDisabledElectric;
-  //     } else {
-  //      isDisabledUkulele;
-  //     }
-
-  //   }
-
-  // };
 
   return (
     <form className="catalog-filter">

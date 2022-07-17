@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
 import { APIRoute, ParamsFilter } from '../const';
-import { loadCards, loadComments, loadFilteredCards, loadProduct } from './data-process/data-process';
+import { loadCards, loadComments, loadFilteredCards, loadProduct } from './guitars/guitars';
 import { CommentData } from '../types/comment-data';
 import { errorHandle } from '../services/error-handle';
 import { AppDispatch, State } from '../types/state';
