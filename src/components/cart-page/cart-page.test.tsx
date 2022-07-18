@@ -1,15 +1,17 @@
-import { render, screen } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
 import { configureMockStore } from '@jedmao/redux-mock-store';
-import thunk from 'redux-thunk';
+import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import { createAPI } from '../../services/api';
+import thunk from 'redux-thunk';
+import * as Redux from 'react-redux';
+import { Router } from 'react-router-dom';
 import { NameSpace } from '../../const';
+import { createAPI } from '../../services/api';
 import { mockTestCard, mockTestCards, mockTestComments } from '../mock/mock';
-import CatalogFilter from './catalog-filter';
+import CartPage from './cart-page';
+import { createMemoryHistory } from 'history';
 
 
-describe('Component: CatalogFilter', () => {
+describe('Component: CartPage', () => {
   const api = createAPI();
   const middlewares = [thunk.withExtraArgument(api)];
 
@@ -42,22 +44,22 @@ describe('Component: CatalogFilter', () => {
       },
     },
   });
+
   it('should render correctly', () => {
+    const dispatch = jest.fn();
+    const useDispatch = jest.spyOn(Redux, 'useDispatch');
+    useDispatch.mockReturnValue(dispatch);
+
+    const history = createMemoryHistory();
     render(
       <Provider store={fakeStore}>
-        <BrowserRouter>
-          <CatalogFilter/>
-        </BrowserRouter>
+        <Router location={history.location} navigator={history}>
+          <CartPage />
+        </Router>
       </Provider>,
     );
 
-    expect(screen.getByText(/Фильтр/i)).toBeInTheDocument();
-    expect(screen.getByText(/минимальная цена/i)).toBeInTheDocument();
-    expect(screen.getByText(/максимальная цена/i)).toBeInTheDocument();
-    expect(screen.getByText(/тип гитар/i)).toBeInTheDocument();
-    expect(screen.getByText(/Акустическая гитара/i)).toBeInTheDocument();
-    expect(screen.getByText(/Электрогитара/i)).toBeInTheDocument();
-    expect(screen.getByText(/укулеле/i)).toBeInTheDocument();
-    expect(screen.getByText(/количество струн/i)).toBeInTheDocument();
+    expect(screen.getByText('Главная')).toBeInTheDocument();
+
   });
 });

@@ -17,7 +17,7 @@ export const getMinPrice = (guitarList: Card[]) => {
 };
 
 export const getMaxPrice = (guitarList: Card[]) => {
-  if(guitarList.length <= 0) {
+  if(guitarList?.length <= 0) {
     return 0;
   }
 
@@ -31,5 +31,4 @@ export const getMaxPrice = (guitarList: Card[]) => {
 
   return max;
 };
-
 

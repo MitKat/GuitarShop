@@ -21,10 +21,18 @@ describe('Component App', () => {
       product: mockTestCard,
       isDataLoaded: true,
       comments: {'1': mockTestComments},
+      catalogFilteredCards: mockTestCards,
+      guitarsInCart: [{guitar: mockTestCard, quantity: 1}],
+      clickGuitarId: 0,
+      discount: 0,
     },
     [NameSpace.Modal]: {
-      isVisible: false,
+      isFeedback: false,
       isSuccess: false,
+      isFormSearch: false,
+      isAddInCart: false,
+      isAddedSuccess: false,
+      isDeleteFromCart: false,
     },
     [NameSpace.FiltersAndSort]: {
       filtersState: {
@@ -65,7 +73,7 @@ describe('Component App', () => {
     expect(screen.getByText(/Каталог гитар/i)).toBeInTheDocument();
   });
 
-  it('should render CardPage when user navigate to "/product/id"', () => {
+  it('should render GuitarPage when user navigate to "/product/id"', () => {
     history.push(`/product/${mockTestCard.id}`);
     render(fakeApp);
 

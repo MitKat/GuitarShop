@@ -5,6 +5,7 @@ import { TypeGuitarTranslation } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks/main';
 import useScrollTop from '../../hooks/use-scroll-top';
 import { fetchCommentsAction, fetchProductAction } from '../../store/api-actions';
+import { onClickGuitar } from '../../store/guitars/guitars';
 import { openModalAddInCart } from '../../store/modals/modals';
 import Breadcrumbs from '../breadcrumbs/breadcrumbs';
 import Comments from '../comments/comments';
@@ -48,6 +49,7 @@ function GuitarPage(): JSX.Element {
   };
 
   const handleOpenModalAddInCart = () => {
+    dispatch(onClickGuitar(Number(id)));
     dispatch(openModalAddInCart());
   };
 

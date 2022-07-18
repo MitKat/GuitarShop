@@ -14,15 +14,15 @@ type ProductCardProps = {
 
 function ProductCard({card}: ProductCardProps): JSX.Element {
   const dispatch = useAppDispatch();
+  const {comments} = useAppSelector(({GUITARS}) => GUITARS);
   const {guitarsInCart} = useAppSelector(({GUITARS}) => GUITARS);
 
-  const isGuitarInCart = guitarsInCart.some((item) => item.id === card.id);
+  const isGuitarInCart = guitarsInCart?.some((item) => item.guitar.id === card.id);
 
   useEffect(() => {
     dispatch(fetchCommentsAction(card.id));
   }, [card.id, dispatch]);
 
-  const {comments} = useAppSelector(({GUITARS}) => GUITARS);
 
   const handleOpenModal = () => {
     dispatch(onClickGuitar(card.id));

@@ -12,6 +12,8 @@ type HeaderProps = {
 function Header({isCatalog, isCart}: HeaderProps): JSX.Element {
   const {guitarsInCart} = useAppSelector(({GUITARS}) => GUITARS);
 
+  const summaQuantityGuitar = guitarsInCart?.reduce((sum, guitar) =>  sum += guitar.quantity, 0);
+
   return (
     <header className="header" id='header'>
       <div className="container header__wrapper">
@@ -34,7 +36,7 @@ function Header({isCatalog, isCart}: HeaderProps): JSX.Element {
           <svg className="header__cart-icon" width="14" height="14" aria-hidden="true">
             <use xlinkHref="#icon-basket"></use>
           </svg><span className="visually-hidden">Перейти в корзину</span>
-          {guitarsInCart.length > 0 && <span className="header__cart-count">{guitarsInCart.length}</span>}
+          {guitarsInCart?.length > 0 && <span className="header__cart-count">{summaQuantityGuitar}</span>}
         </Link>
       </div>
     </header>

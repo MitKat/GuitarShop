@@ -11,11 +11,6 @@ function  ModalCartDelete(): JSX.Element {
 
   const guitar = catalogCards.find((item) => item.id === clickGuitarId);
 
-  // eslint-disable-next-line no-console
-  console.log('delete', clickGuitarId);
-  // eslint-disable-next-line no-console
-  console.log('delete', guitar);
-
   const handleKeyDown = useCallback((evt: { key: string; }) => {
     if(evt.key === NAME_KEY_ESCAPE) {
       dispatch(closeModal());

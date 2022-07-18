@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
 import { APIRoute, ParamsFilter } from '../const';
-import { loadCards, loadComments, loadFilteredCards, loadProduct } from './guitars/guitars';
+import { loadCards, loadComments, loadFilteredCards, loadProduct, setDiscount } from './guitars/guitars';
 import { CommentData } from '../types/comment-data';
 import { errorHandle } from '../services/error-handle';
 import { AppDispatch, State } from '../types/state';
@@ -88,6 +88,22 @@ export const sendComment = createAsyncThunk<void, CommentData, {
     try {
       await api.post(APIRoute.Comments, {guitarId, userName, advantage, disadvantage, comment, rating});
       dispatch(fetchCommentsAction(guitarId));
+    } catch (error) {
+      errorHandle(error);
+    }
+  },
+);
+
+export const applyCoupon = createAsyncThunk<void, string, {
+  dispatch: AppDispatch,
+  state: State,
+  extra: AxiosInstance
+}>(
+  'cart/applyCoupon',
+  async (coupon, {dispatch, extra: api}) => {
+    try {
+      const {data} = await api.post(APIRoute.Coupon, {coupon});
+      dispatch(setDiscount(data));
     } catch (error) {
       errorHandle(error);
     }

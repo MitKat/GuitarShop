@@ -8,7 +8,8 @@ export enum AppRoute {
 
 export enum APIRoute {
   Cards = '/guitars',
-  Comments = '/comments'
+  Comments = '/comments',
+  Coupon = '/coupons'
 }
 
 export enum NameSpace {
@@ -79,3 +80,26 @@ export enum TypeOrder {
   Desc = 'desc',
   Asc = 'asc',
 }
+
+export const CouponFalse = [
+  {
+    name: 'light-333',
+    percent: 3,
+  },
+  {
+    name: 'medium-444',
+    percent: 4,
+  },
+  {
+    name: 'height-555',
+    percent: 5,
+  },
+];
+
+
+export enum Coupon {
+  light = 'light-333',
+  medium = 'medium-444',
+  height = 'height-555',
+}
+

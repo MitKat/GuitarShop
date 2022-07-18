@@ -1,6 +1,7 @@
 import { mockTestCard, mockTestCards, mockTestComments } from '../../components/mock/mock';
 import { InitialProduct } from '../../const';
-import { guitars, loadCards, loadComments, loadFilteredCards, loadProduct } from './guitars';
+import { guitars, loadCards, loadComments,
+  loadFilteredCards, loadProduct, setGuitarInCart } from './guitars';
 
 describe('Reducer: dataProcess', () => {
   it('without additional parameters should return initial state', () => {
@@ -12,6 +13,7 @@ describe('Reducer: dataProcess', () => {
         isDataLoaded: false,
         comments: {},
         clickGuitarId: 0,
+        discount: 0,
       });
   });
   const state = {
@@ -22,6 +24,7 @@ describe('Reducer: dataProcess', () => {
     isDataLoaded: false,
     comments: {},
     clickGuitarId: 0,
+    discount: 0,
   };
 
   it('should load cards', () => {
@@ -46,6 +49,12 @@ describe('Reducer: dataProcess', () => {
   it('should load comments', () => {
     expect(guitars.reducer(state, loadComments({id:2, data:mockTestComments})))
       .toEqual({...state, comments: {2:mockTestComments},
+      });
+  });
+
+  it('should setGuitarInCart', () => {
+    expect(guitars.reducer(state, setGuitarInCart(mockTestCard)))
+      .toEqual({...state, guitarsInCart: [{guitar: mockTestCard, quantity: 1}],
       });
   });
 });

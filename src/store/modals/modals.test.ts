@@ -1,4 +1,4 @@
-import { closeModal, modals, openModalFeedback, openModalSuccess } from './modals';
+import { closeModal, modals, openFormSearch, openModalAddedSucces, openModalAddInCart, openModalDeleteGuitar, openModalFeedback, openModalSuccess } from './modals';
 
 
 describe('Reducer: mainProcess', () => {
@@ -25,7 +25,7 @@ describe('Reducer: mainProcess', () => {
 
   it('should open modal', () => {
     expect(modals.reducer(state, openModalFeedback()))
-      .toEqual({...state, isVisible: true,
+      .toEqual({...state, isFeedback: true,
       });
   });
 
@@ -34,12 +34,36 @@ describe('Reducer: mainProcess', () => {
       .toEqual({...state, isSuccess: true,
       });
   });
+  it('should open form search', () => {
+    expect(modals.reducer(state, openFormSearch()))
+      .toEqual({...state, isFormSearch: true,
+      });
+  });
+  it('should open modal add in cart', () => {
+    expect(modals.reducer(state, openModalAddInCart()))
+      .toEqual({...state, isAddInCart: true,
+      });
+  });
+  it('should open modal added success', () => {
+    expect(modals.reducer(state, openModalAddedSucces()))
+      .toEqual({...state, isAddedSuccess: true,
+      });
+  });
+  it('should open modal delete guitar', () => {
+    expect(modals.reducer(state, openModalDeleteGuitar()))
+      .toEqual({...state, isDeleteFromCart: true,
+      });
+  });
 
   it('should close all modal', () => {
     expect(modals.reducer(state, closeModal()))
       .toEqual({
-        isVisible: false,
+        isFeedback: false,
         isSuccess: false,
+        isFormSearch: false,
+        isAddInCart: false,
+        isAddedSuccess: false,
+        isDeleteFromCart: false,
       });
   });
 });

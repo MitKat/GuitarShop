@@ -18,7 +18,11 @@ describe('Component: FormSearch', () => {
       catalogCards: mockTestCards,
       product: mockTestCard,
       isDataLoaded: true,
-      comments:  {1: mockTestComments},
+      comments: {'1': mockTestComments},
+      catalogFilteredCards: mockTestCards,
+      guitarsInCart: [{guitar: mockTestCard, quantity: 1}],
+      clickGuitarId: 0,
+      discount: 0,
     },
     [NameSpace.Modal]: {
       isVisible: false,

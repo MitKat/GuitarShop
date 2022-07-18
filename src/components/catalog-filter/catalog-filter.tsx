@@ -9,6 +9,7 @@ import { getMaxPrice, getMinPrice } from '../../utils';
 
 function CatalogFilter(): JSX.Element {
   const {catalogFilteredCards} = useAppSelector(({GUITARS}) => GUITARS);
+  const {catalogCards} = useAppSelector(({GUITARS}) => GUITARS);
   const {filtersState} = useAppSelector(({FILTERS_AND_SORT}) => FILTERS_AND_SORT);
   const [isDisabled4, setIsDisabled4] = useState(false);
   const [isDisabled6, setIsDisabled6] = useState(false);
@@ -20,8 +21,8 @@ function CatalogFilter(): JSX.Element {
 
   const dispatch = useDispatch();
 
-  const minPrice = getMinPrice(catalogFilteredCards);
-  const maxPrice = getMaxPrice(catalogFilteredCards);
+  const minPrice = getMinPrice((catalogFilteredCards) ? catalogFilteredCards : catalogCards);
+  const maxPrice = getMaxPrice((catalogFilteredCards) ? catalogFilteredCards : catalogCards);
 
   const minPriceRef = useRef<HTMLInputElement | null>(null);
   const maxPriceRef = useRef<HTMLInputElement | null>(null);

@@ -10,13 +10,7 @@ function  ModalCartAdd(): JSX.Element {
   const {clickGuitarId} = useAppSelector(({GUITARS}) => GUITARS);
   const {catalogCards} = useAppSelector(({GUITARS}) => GUITARS);
 
-  // eslint-disable-next-line no-console
-  console.log(clickGuitarId);
-
   const guitar = catalogCards.find((item) => item.id === clickGuitarId);
-
-  // eslint-disable-next-line no-console
-  console.log(guitar);
 
   const handleKeyDown = useCallback((evt: { key: string; }) => {
     if(evt.key === NAME_KEY_ESCAPE) {

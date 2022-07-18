@@ -4,9 +4,9 @@ import { configureMockStore } from '@jedmao/redux-mock-store';
 import { State } from '../types/state';
 import thunk from 'redux-thunk';
 import { Action, ThunkDispatch } from '@reduxjs/toolkit';
-import { APIRoute } from '../const';
-import { fetchCardsAction, fetchCommentsAction, fetchFilteredCardsAction, fetchProductAction, sendComment } from './api-actions';
-import { loadCards, loadComments, loadFilteredCards, loadProduct } from './guitars/guitars';
+import { APIRoute, Coupon } from '../const';
+import { applyCoupon, fetchCardsAction, fetchCommentsAction, fetchFilteredCardsAction, fetchProductAction, sendComment } from './api-actions';
+import { loadCards, loadComments, loadFilteredCards, loadProduct, setDiscount } from './guitars/guitars';
 import { mockCommentData, mockTestCard, mockTestCards, mockTestComments } from '../components/mock/mock';
 
 describe('Async actions', () => {
@@ -35,12 +35,13 @@ describe('Async actions', () => {
 
   it('should dispatch loadFilteredCards when GET ?stringCount', async () => {
     const fakeCards = mockTestCards;
+
     const state = {
       filtersState: {
         priceStart: 0,
         priceEnd: 0,
-        typeGuitar: [],
-        stringCount: '6',
+        typeGuitar: '',
+        stringCount: [6],
       },
       sortState: {
         sort: 'price',
@@ -48,7 +49,7 @@ describe('Async actions', () => {
       },
     };
     mockAPI
-      .onGet(`${APIRoute.Cards}?stringCount=6`)
+      .onGet(`${APIRoute.Cards}?&stringCount=6&_sort=price&_order=asc`)
       .reply(200, fakeCards);
 
     const store = mockStore();
@@ -91,6 +92,18 @@ describe('Async actions', () => {
     await store.dispatch(sendComment(fakeComment));
     const actions = store.getActions().map(({type}) => type);
     expect(actions).toContain(loadComments.toString());
+  });
+
+  it('should dispatch discount', async () => {
+    const discount = 1;
+    mockAPI
+      .onPost(APIRoute.Coupon)
+      .reply(200, discount);
+
+    const store = mockStore();
+    await store.dispatch(applyCoupon(Coupon.light));
+    const actions = store.getActions().map(({type}) => type);
+    expect(actions).toContain(setDiscount.toString());
   });
 
 });

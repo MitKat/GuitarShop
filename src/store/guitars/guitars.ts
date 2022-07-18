@@ -1,16 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { InitialProduct, NameSpace } from '../../const';
 import { Card } from '../../types/card';
+import { CartGuitar } from '../../types/cartGuitar';
 import { Comment } from '../../types/comment';
 
 interface InitialState {
   catalogCards: Card[];
   catalogFilteredCards: Card[];
-  guitarsInCart: Card[];
+  guitarsInCart: CartGuitar[];
   product: Card;
   isDataLoaded: boolean;
   comments: {[guitarId: string]: Comment[]};
   clickGuitarId: number,
+  discount: number,
 }
 
 const guitarsInCart = localStorage.getItem('guitarsInCart');
@@ -23,6 +25,7 @@ const initialState: InitialState = {
   isDataLoaded: false,
   comments: {},
   clickGuitarId: 0,
+  discount: 0,
 };
 
 export const guitars = createSlice({
@@ -46,14 +49,38 @@ export const guitars = createSlice({
       };
     },
     setGuitarInCart: (state, action) => {
-      state.guitarsInCart = [...state.guitarsInCart, action.payload];
+
+      const indexGuitarInCart = state.guitarsInCart.findIndex((item) => item.guitar.id === Number(action.payload.id));
+
+      if (indexGuitarInCart >= 0) {
+        state.guitarsInCart[indexGuitarInCart].quantity += 1;
+      } else {
+        state.guitarsInCart = [
+          ...state.guitarsInCart,
+          {guitar: action.payload, quantity: 1},
+        ];
+      }
+      localStorage.setItem('guitarsInCart', JSON.stringify(state.guitarsInCart));
+    },
+    setQuantityGuitar: (state, action) => {
+      const indexGuitarInCart = state.guitarsInCart.findIndex((item) => item.guitar.id === action.payload.id);
+      state.guitarsInCart[indexGuitarInCart].quantity += action.payload.value;
+      localStorage.setItem('guitarsInCart', JSON.stringify(state.guitarsInCart));
+    },
+    changeQuantityGuitar: (state, action) => {
+      const indexGuitarInCart = state.guitarsInCart.findIndex((item) => item.guitar.id === action.payload.id);
+      state.guitarsInCart[indexGuitarInCart].quantity = action.payload.value;
       localStorage.setItem('guitarsInCart', JSON.stringify(state.guitarsInCart));
     },
     deleteGuitarFromCart: (state, action) => {
-      state.guitarsInCart = [...state.guitarsInCart].filter((item) => item.id !== action.payload);
+      state.guitarsInCart = [...state.guitarsInCart].filter((item) => item.guitar.id !== action.payload);
+      localStorage.setItem('guitarsInCart', JSON.stringify(state.guitarsInCart));
     },
     onClickGuitar: (state, action) => {
       state.clickGuitarId = action.payload;
+    },
+    setDiscount: (state, action) => {
+      state.discount = action.payload;
     },
   },
 });
@@ -65,5 +92,8 @@ export const {
   loadComments,
   onClickGuitar,
   setGuitarInCart,
+  changeQuantityGuitar,
+  setQuantityGuitar,
   deleteGuitarFromCart,
+  setDiscount,
 } = guitars.actions;
