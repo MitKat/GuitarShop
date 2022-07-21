@@ -40,14 +40,15 @@ describe('Async actions', () => {
       filtersState: {
         priceStart: 0,
         priceEnd: 0,
-        typeGuitar: '',
-        stringCount: [6],
+        typeGuitar: [],
+        stringCount: ['6'],
       },
       sortState: {
         sort: 'price',
         order: 'asc',
       },
     };
+
     mockAPI
       .onGet(`${APIRoute.Cards}?&stringCount=6&_sort=price&_order=asc`)
       .reply(200, fakeCards);

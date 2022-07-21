@@ -38,7 +38,7 @@ function ProductCard({card}: ProductCardProps): JSX.Element {
           <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>{comments[card.id]?.length}</p>
         </div>
         <p className="product-card__title">{card.name}</p>
-        <p className="product-card__price"><span className="visually-hidden">Цена:</span>{`${card.price} ₽`}
+        <p className="product-card__price"><span className="visually-hidden">Цена:</span>{`${card.price.toLocaleString('ru-RU')} ₽`}
         </p>
       </div>
       <div className="product-card__buttons">

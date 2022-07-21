@@ -27,8 +27,8 @@ function  ModalCartsuccess(): JSX.Element {
   };
 
   return (
-    <div className="modal-success--add" onKeyDown={handleKeyDown}>
-      <div className="modal is-active modal-for-ui-kit">
+    <div className="modal is-active modal--success modal-for-ui-kit">
+      <div className="modal-success--add" onKeyDown={handleKeyDown}>
         <div className="modal__wrapper">
           <div className="modal__overlay" data-close-modal></div>
           <div className="modal__content">
@@ -38,11 +38,11 @@ function  ModalCartsuccess(): JSX.Element {
             <p className="modal__message">Товар успешно добавлен в корзину</p>
             <div className="modal__button-container modal__button-container--add">
               <Link className="button button--small modal__button" to={AppRoute.CartPage}>Перейти в корзину</Link>
-              <button className="button button--black-border button--small modal__button modal__button--right"
-                onClick={handleCloseModal}
+              <Link className="button button--black-border button--small modal__button modal__button--right"
+                to={AppRoute.Main} onClick={handleCloseModal}
               >
               Продолжить покупки
-              </button>
+              </Link>
             </div>
             <button className="modal__close-btn button-cross"
               type="button" aria-label="Закрыть"

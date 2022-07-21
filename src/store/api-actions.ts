@@ -6,6 +6,7 @@ import { CommentData } from '../types/comment-data';
 import { errorHandle } from '../services/error-handle';
 import { AppDispatch, State } from '../types/state';
 import { stringify } from 'query-string';
+import { FilterAndSort } from '../types/filter-and-sort';
 
 export const fetchCardsAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch,
@@ -23,7 +24,7 @@ export const fetchCardsAction = createAsyncThunk<void, undefined, {
   },
 );
 
-export const fetchFilteredCardsAction = createAsyncThunk<void, any, {
+export const fetchFilteredCardsAction = createAsyncThunk<void, FilterAndSort, {
   dispatch: AppDispatch,
   state: State,
   extra: AxiosInstance

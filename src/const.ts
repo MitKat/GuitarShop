@@ -29,9 +29,9 @@ export enum Scroll {
   Scrolling = 'scroll',
 }
 
-export const CARDS_PER_PAGE = 9;
-export const NAME_KEY_ESCAPE = 'Escape';
-export const NAME_KEY_ENTER = 'Enter';
+export const CARDS_PER_PAGE = 9 as const;
+export const NAME_KEY_ESCAPE = 'Escape' as const;
+export const NAME_KEY_ENTER = 'Enter' as const;
 
 export const InitialProduct = {
   id: -1,
@@ -43,7 +43,7 @@ export const InitialProduct = {
   stringCount: 0,
   rating: 0,
   price: 0,
-};
+} as const;
 
 export const TypeGuitarTranslation = new Map([
   ['acoustic', 'Акустическая гитара'],
@@ -55,14 +55,14 @@ export const TypeGuitar = {
   acoustic: 'acoustic',
   electric: 'electric',
   ukulele: 'ukulele',
-};
+} as const;
 
 export const CountString = {
   count4: '4',
   count6: '6',
   count7: '7',
   count12: '12',
-};
+} as const;
 
 export enum ParamsFilter {
   PriceStart = 'price_gte',
@@ -94,12 +94,19 @@ export const CouponFalse = [
     name: 'height-555',
     percent: 5,
   },
-];
+] as const;
 
 
 export enum Coupon {
   light = 'light-333',
   medium = 'medium-444',
   height = 'height-555',
+}
+
+export enum Discount {
+  default = 0,
+  light = 15,
+  medium = 25,
+  height = 35,
 }
 

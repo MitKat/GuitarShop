@@ -123,7 +123,7 @@ function GuitarPage(): JSX.Element {
             </div>
             <div className="product-container__price-wrapper">
               <p className="product-container__price-info product-container__price-info--title">Цена:</p>
-              <p className="product-container__price-info product-container__price-info--value">{`${product.price} ₽`}</p>
+              <p className="product-container__price-info product-container__price-info--value">{`${product.price.toLocaleString('ru-RU')} ₽`}</p>
               <button className="button button--red button--big product-container__button"
                 onClick={handleOpenModalAddInCart}
               >Добавить в корзину

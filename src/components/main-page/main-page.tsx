@@ -68,7 +68,7 @@ function MainPage({urlPage}: MainPageProps): JSX.Element {
         dispatch(addFilterStringCount(parsed.stringCount));
       }
     }
-  }, []);
+  }, [dispatch, location.search]);
 
   useEffect(() => {
     dispatch(fetchFilteredCardsAction({filtersState, sortState}));

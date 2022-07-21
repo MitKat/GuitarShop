@@ -16,6 +16,7 @@ interface InitialState {
 }
 
 const guitarsInCart = localStorage.getItem('guitarsInCart');
+const discount = localStorage.getItem('discount');
 
 const initialState: InitialState = {
   catalogCards: [],
@@ -25,7 +26,7 @@ const initialState: InitialState = {
   isDataLoaded: false,
   comments: {},
   clickGuitarId: 0,
-  discount: 0,
+  discount: discount ? JSON.parse(discount) : 0,
 };
 
 export const guitars = createSlice({
@@ -81,6 +82,7 @@ export const guitars = createSlice({
     },
     setDiscount: (state, action) => {
       state.discount = action.payload;
+      localStorage.setItem('discount', JSON.stringify(state.discount));
     },
   },
 });

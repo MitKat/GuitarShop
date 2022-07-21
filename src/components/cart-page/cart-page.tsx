@@ -1,5 +1,5 @@
-import React, { ChangeEvent, useRef, useState } from 'react';
-import { Coupon, TypeGuitarTranslation } from '../../const';
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { Coupon, Discount, TypeGuitarTranslation } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks/main';
 import { applyCoupon } from '../../store/api-actions';
 import { changeQuantityGuitar, onClickGuitar, setDiscount, setQuantityGuitar } from '../../store/guitars/guitars';
@@ -15,6 +15,8 @@ function CartPage(): JSX.Element {
   const {isDeleteFromCart} = useAppSelector(({MODAL}) => MODAL);
   const dispatch = useAppDispatch();
 
+  const [placeholder, setPlaceholder] = useState('Введите промокод');
+  const [isApplyCoupon, setIsApplyCoupon] = useState(false);
   const [isValidCoupon, setIsValidCoupon] = useState(false);
   const inputCoupon = useRef<HTMLInputElement | null>(null);
 
@@ -26,6 +28,23 @@ function CartPage(): JSX.Element {
     dispatch(onClickGuitar(id));
     dispatch(openModalDeleteGuitar());
   };
+
+  useEffect(() => {
+    switch(discount){
+      case Discount.default:
+        setPlaceholder('Введите промокод');
+        break;
+      case Discount.light:
+        setPlaceholder(Coupon.light);
+        break;
+      case Discount.medium:
+        setPlaceholder(Coupon.medium);
+        break;
+      case Discount.height:
+        setPlaceholder(Coupon.height);
+        break;
+    }
+  }, [discount]);
 
   const handleChangeQuantity = (id: number) => (evt:ChangeEvent<HTMLInputElement>) => {
     evt.target.value = evt.target.value.replace(/^0/, '');
@@ -65,11 +84,15 @@ function CartPage(): JSX.Element {
     evt.preventDefault();
 
     if(inputCoupon.current !== null ) {
-      const isValid = inputCoupon.current.value === Coupon.light ||
-        inputCoupon.current.value === Coupon.medium || inputCoupon.current.value === Coupon.height;
+      setIsApplyCoupon(true);
+      inputCoupon.current.value = inputCoupon.current.value.replace(/\s/g, '');
+      const couponValue = inputCoupon.current.value;
+
+      const isValid = couponValue === Coupon.light ||
+        couponValue === Coupon.medium || couponValue === Coupon.height;
       if (isValid) {
         setIsValidCoupon(true);
-        dispatch(applyCoupon(inputCoupon.current.value));
+        dispatch(applyCoupon(couponValue));
       } else {
         setIsValidCoupon(false);
         dispatch(setDiscount(0));
@@ -108,7 +131,7 @@ function CartPage(): JSX.Element {
                     {TypeGuitarTranslation.get(String(guitar?.type))}, {guitar?.stringCount} струнная
                   </p>
                 </div>
-                <div className="cart-item__price">{guitar?.price} ₽</div>
+                <div className="cart-item__price">{guitar?.price.toLocaleString('ru-RU')} ₽</div>
                 <div className="quantity cart-item__quantity">
                   <button className="quantity__button"
                     aria-label="Уменьшить количество"
@@ -133,7 +156,7 @@ function CartPage(): JSX.Element {
                     </svg>
                   </button>
                 </div>
-                <div className="cart-item__price-total">{guitar?.price*quantity} ₽</div>
+                <div className="cart-item__price-total">{(guitar?.price*quantity).toLocaleString('ru-RU')} ₽</div>
               </div>
             ))}
             <div className="cart__footer">
@@ -143,11 +166,10 @@ function CartPage(): JSX.Element {
                 <form className="coupon__form" id="coupon-form" method="post" action="/">
                   <div className="form-input coupon__input">
                     <label className="visually-hidden">Промокод</label>
-                    <input type="text" placeholder="Введите промокод" id="coupon" name="coupon" ref={inputCoupon}/>
-                    {isValidCoupon ?
-                      <p className="form-input__message form-input__message--success">Промокод принят</p>
-                      :
-                      <p className="form-input__message form-input__message--error">неверный промокод</p>}
+                    <input type="text" placeholder={placeholder} id="coupon" name="coupon" ref={inputCoupon}/>
+                    {discount !== 0 && <p className="form-input__message form-input__message--success">Промокод принят</p>}
+                    {!isValidCoupon && isApplyCoupon && <p className="form-input__message form-input__message--error">неверный промокод</p>}
+                    {discount === 0 && !isApplyCoupon && <p className="form-input__message form-input__message--error"></p>}
                   </div>
                   <button className="button button--big coupon__button"
                     onClick={handleApplyCoupon}
@@ -159,15 +181,15 @@ function CartPage(): JSX.Element {
               <div className="cart__total-info">
                 <p className="cart__total-item">
                   <span className="cart__total-value-name">Всего:</span>
-                  <span className="cart__total-value">{totalPrice} ₽</span>
+                  <span className="cart__total-value">{totalPrice.toLocaleString('ru-RU')} ₽</span>
                 </p>
                 <p className="cart__total-item">
                   <span className="cart__total-value-name">Скидка:</span>
-                  <span className="cart__total-value cart__total-value--bonus">- {(discount > 0) ? bonus : 0} ₽</span>
+                  <span className="cart__total-value cart__total-value--bonus"> {(discount > 0) ? `- ${bonus.toLocaleString('ru-RU')}` : 0} ₽</span>
                 </p>
                 <p className="cart__total-item">
                   <span className="cart__total-value-name">К оплате:</span>
-                  <span className="cart__total-value cart__total-value--payment">{payment} ₽</span>
+                  <span className="cart__total-value cart__total-value--payment">{payment.toLocaleString('ru-RU')} ₽</span>
                 </p>
                 <button className="button button--red button--big cart__order-button">Оформить заказ</button>
               </div>
